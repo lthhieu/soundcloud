@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Modal, Input, notification, message } from 'antd';
+import { Modal, Input, notification, message, Form, InputNumber, Select, Flex, Row, Col } from 'antd';
 interface IProps {
     access_token: string,
     getData: () => Promise<void>,
@@ -8,23 +7,25 @@ interface IProps {
 }
 const CreateUserModal = (props: IProps) => {
     let { access_token, getData, isCreateModalOpen, SetIsCreateModalOpen } = props
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [age, setAge] = useState("")
-    const [gender, setGender] = useState("")
-    const [address, setAddress] = useState("")
-    const [role, setRole] = useState("")
-    const handleOk = async () => {
-        const data = { name, email, password, age, gender, address, role }
+    const { Option } = Select;
+    const [form] = Form.useForm();
+    const handleOk = () => {
+        form.submit()
+    }
 
+    const handleCancel = () => {
+        form.resetFields();
+        SetIsCreateModalOpen(false);
+    };
+    const onFinish = async (values: any) => {
+        const { name, email, password, age, gender, address, role } = values
         const response = await fetch('http://localhost:8000/api/v1/users', {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${access_token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({ name, email, password, age, gender, address, role })
         })
         const result = await response.json()
         if (result.data) {
@@ -39,33 +40,103 @@ const CreateUserModal = (props: IProps) => {
             })
         }
     }
-
-    const handleCancel = () => {
-        setName("")
-        setEmail("")
-        setPassword("")
-        setAddress("")
-        setAge("")
-        setGender("")
-        setRole("")
-        SetIsCreateModalOpen(false);
-    };
+    const validateMessages = {
+        required: '${label} is required!',
+        types: {
+            email: '${label} is not a valid email!',
+            number: '${label} is not a valid number!',
+        },
+        number: {
+            range: '${label} must be between ${min} and ${max}',
+        },
+    }
     return (<>
         <Modal title="Add New User" okText={"Submit"} maskClosable={false} open={isCreateModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <div><label>Name</label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="name" /></div>
-            <div><label>Email</label>
-                <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" /></div>
-            <div><label>Password</label>
-                <Input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" /></div>
-            <div> <label>Age</label>
-                <Input value={age} onChange={(e) => setAge(e.target.value)} placeholder="Age" /></div>
-            <div><label>Gender</label>
-                <Input value={gender} onChange={(e) => setGender(e.target.value)} placeholder="Gender" /></div>
-            <div><label>Address</label>
-                <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" /></div>
-            <div><label>Role</label>
-                <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Role" /></div>
+            <Form
+                form={form}
+                layout='vertical'
+                name="create-modal"
+                onFinish={onFinish}
+                validateMessages={validateMessages}
+            >
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Name"
+                    name="name"
+                    rules={[{ required: true }]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Email"
+                    name="email"
+                    rules={[{ required: true, type: 'email' }]}
+                >
+                    <Input type='email' />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true }]}
+                >
+                    <Input.Password />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Age"
+                    name="age"
+                    rules={[{ required: true, type: 'number', min: 0, max: 99 }]}
+                >
+                    <InputNumber style={{ width: '100%' }} />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Address"
+                    name="address"
+                    rules={[{ required: true }]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Flex>
+                    <Row gutter={[8, 0]} style={{ display: 'contents' }}>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                style={{ width: '100%', marginBottom: 8 }}
+                                name="gender" label="Gender" rules={[{ required: true }]}>
+                                <Select
+                                    placeholder="Select a option and change input text above"
+                                    allowClear
+                                >
+                                    <Option value="MALE">Male</Option>
+                                    <Option value="FEMALE">Female</Option>
+                                    <Option value="OTHER">Other</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                style={{ width: '100%', marginBottom: 8 }}
+                                name="role" label="Role" rules={[{ required: true }]}>
+                                <Select
+                                    placeholder="Select a option and change input text above"
+                                    allowClear
+                                >
+                                    <Option value="ADMIN">Admin</Option>
+                                    <Option value="USER">User</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Flex>
+            </Form>
         </Modal></>)
 }
 export default CreateUserModal

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Modal, Input, notification, message } from 'antd';
+import { Modal, Input, notification, message, Form, InputNumber, Select, Flex, Row, Col } from 'antd';
+
 import { IUsers } from './users.table';
 interface IProps {
     access_token: string,
@@ -11,6 +12,8 @@ interface IProps {
 }
 const UpdateUserModal = (props: IProps) => {
     let { access_token, getData, isUpdateModalOpen, SetIsUpdateModalOpen, dataUpdate, setDataUpdate } = props
+    const { Option } = Select;
+    const [form] = Form.useForm();
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -21,17 +24,37 @@ const UpdateUserModal = (props: IProps) => {
     const [_id, set_id] = useState("")
     useEffect(() => {
         if (dataUpdate) {
-            setName(dataUpdate.name)
-            setEmail(dataUpdate.email)
-            set_id(dataUpdate._id)
-            setAddress(dataUpdate.address)
-            setAge(dataUpdate.age)
-            setGender(dataUpdate.gender)
-            setRole(dataUpdate.role)
+            form.setFieldsValue({
+                name: dataUpdate.name,
+                email: dataUpdate.email,
+                address: dataUpdate.address,
+                age: dataUpdate.age,
+                gender: dataUpdate.gender,
+                role: dataUpdate.role,
+                _id: dataUpdate._id
+            })
         }
         console.log(dataUpdate)
     }, [dataUpdate])
     const handleOk = async () => {
+        form.submit()
+
+    }
+
+    const handleCancel = () => {
+        setName("")
+        setEmail("")
+        setAddress("")
+        setAge("")
+        setGender("")
+        setRole("")
+        set_id("")
+        setDataUpdate(null)
+        SetIsUpdateModalOpen(false);
+    }
+
+    const onFinish = async (values: any) => {
+        const { _id, name, email, age, gender, address, role } = values
         const data = { _id, name, email, age, gender, address, role }
 
         const response = await fetch('http://localhost:8000/api/v1/users', {
@@ -55,34 +78,95 @@ const UpdateUserModal = (props: IProps) => {
             })
         }
     }
-
-    const handleCancel = () => {
-        setName("")
-        setEmail("")
-        setAddress("")
-        setAge("")
-        setGender("")
-        setRole("")
-        set_id("")
-        setDataUpdate(null)
-        SetIsUpdateModalOpen(false);
-    };
+    const validateMessages = {
+        required: '${label} is required!',
+        types: {
+            email: '${label} is not a valid email!',
+            number: '${label} is not a valid number!',
+        },
+        number: {
+            range: '${label} must be between ${min} and ${max}',
+        },
+    }
     return (<>
-        <Modal title="Update  User" okText={"Submit"} maskClosable={false} open={isUpdateModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <div><label>Name</label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="name" /></div>
-            <div><label>Email</label>
-                <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" /></div>
-            <div><label>Password</label>
-                <Input disabled value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" /></div>
-            <div> <label>Age</label>
-                <Input value={age} onChange={(e) => setAge(e.target.value)} placeholder="Age" /></div>
-            <div><label>Gender</label>
-                <Input value={gender} onChange={(e) => setGender(e.target.value)} placeholder="Gender" /></div>
-            <div><label>Address</label>
-                <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" /></div>
-            <div><label>Role</label>
-                <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Role" /></div>
+        <Modal title="Update User" okText={"Submit"} maskClosable={false} open={isUpdateModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Form
+                form={form}
+                layout='vertical'
+                name="update-modal"
+                onFinish={onFinish}
+                validateMessages={validateMessages}
+            >
+                <Form.Item hidden name="_id"></Form.Item>
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Name"
+                    name="name"
+                    rules={[{ required: true }]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Email"
+                    name="email"
+                    rules={[{ required: true, type: 'email' }]}
+                >
+                    <Input type='email' />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Age"
+                    name="age"
+                    rules={[{ required: true, type: 'number', min: 0, max: 99 }]}
+                >
+                    <InputNumber style={{ width: '100%' }} />
+                </Form.Item>
+
+                <Form.Item
+                    style={{ marginBottom: 8 }}
+                    label="Address"
+                    name="address"
+                    rules={[{ required: true }]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Flex>
+                    <Row gutter={[8, 0]} style={{ display: 'contents' }}>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                style={{ width: '100%', marginBottom: 8 }}
+                                name="gender" label="Gender" rules={[{ required: true }]}>
+                                <Select
+                                    placeholder="Select a option and change input text above"
+                                    allowClear
+                                >
+                                    <Option value="MALE">Male</Option>
+                                    <Option value="FEMALE">Female</Option>
+                                    <Option value="OTHER">Other</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                style={{ width: '100%', marginBottom: 8 }}
+                                name="role" label="Role" rules={[{ required: true }]}>
+                                <Select
+                                    placeholder="Select a option and change input text above"
+                                    allowClear
+                                >
+                                    <Option value="ADMIN">Admin</Option>
+                                    <Option value="USER">User</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Flex>
+            </Form>
         </Modal></>)
 }
 export default UpdateUserModal

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // import '../../styles/users.scss'
-import { Button, Table, notification, Popconfirm, message, Space, Flex } from 'antd';
+import { Button, Table, notification, Popconfirm, message, Space, Flex, Tooltip, Tag } from 'antd';
 import { UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import CreateUserModal from './create.user.modal';
@@ -37,29 +37,43 @@ const UsersTable = () => {
         },
         {
             title: 'Name',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            responsive: ['md']
         },
         {
             title: 'Role',
-            dataIndex: 'role'
+            dataIndex: 'role',
+            responsive: ['sm'],
+            render: (_, { role }) => (
+                <>
+                    {role === 'ADMIN' ? <Tag color='green' key={role}>{role}</Tag> :
+                        <Tag color='geekblue' key={role}>{role}</Tag>
+                    }
+                </>
+            ),
         }, {
             title: 'Actions',
             render: (value, record) => {
                 return (<div>
                     <Space>
-                        <Button icon={<EditOutlined />} onClick={() => {
-                            setDataUpdate(record)
-                            SetIsUpdateModalOpen(true)
-                        }}>Edit</Button>
-                        <Popconfirm
-                            title="Delete the user"
-                            description={`Are you sure to delete ${record.name} user?`}
-                            onConfirm={() => confirm(record._id)}
-                            okText="Yes"
-                            cancelText="No"
-                        >
-                            <Button icon={<DeleteOutlined />} danger>Delete</Button>
-                        </Popconfirm>
+                        <Tooltip title="Edit">
+                            <Button icon={<EditOutlined />} onClick={() => {
+                                setDataUpdate(record)
+                                SetIsUpdateModalOpen(true)
+                            }}></Button>
+                        </Tooltip>
+
+                        <Tooltip title="Delete">
+                            <Popconfirm
+                                title="Delete the user"
+                                description={`Are you sure to delete ${record.name} user?`}
+                                onConfirm={() => confirm(record._id)}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <Button icon={<DeleteOutlined />} danger></Button>
+                            </Popconfirm>
+                        </Tooltip>
                     </Space>
                 </div>)
             }
@@ -137,7 +151,7 @@ const UsersTable = () => {
     return (<>
         <Flex justify='space-between' align='center'>
             <h2>Users Table</h2>
-            <div><Button onClick={showModal} type='primary' icon={<UserAddOutlined />}>Add New</Button></div>
+            <Button onClick={showModal} type='primary' icon={<UserAddOutlined />}>Add New</Button>
         </Flex>
         <Table
             pagination={{
