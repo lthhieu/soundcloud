@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
-// import '../../styles/users.scss'
 import { Button, Table, notification, Popconfirm, message, Space, Flex, Tooltip, Tag } from 'antd';
 import { UserAddOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import CreateUserModal from './create.user.modal';
-import UpdateUserModal from './update.user.modal';
+import UserModal from './user.modal';
 export interface IUsers {
     _id: string,
     email: string,
@@ -17,8 +15,8 @@ export interface IUsers {
 }
 const UsersTable = () => {
     const [users, setUsers] = useState([])
-    const [isCreateModalOpen, SetIsCreateModalOpen] = useState(false)
-    const [isUpdateModalOpen, SetIsUpdateModalOpen] = useState(false)
+    const [isModalOpen, SetIsModalOpen] = useState(false)
+    const [status, setStatus] = useState('')
     const [dataUpdate, setDataUpdate] = useState<null | IUsers>(null)
     const access_token = localStorage.getItem('access_token') as string
     const [meta, setMeta] = useState({
@@ -59,7 +57,8 @@ const UsersTable = () => {
                         <Tooltip title="Edit">
                             <Button icon={<EditOutlined />} onClick={() => {
                                 setDataUpdate(record)
-                                SetIsUpdateModalOpen(true)
+                                setStatus("UPDATE")
+                                SetIsModalOpen(true)
                             }}></Button>
                         </Tooltip>
 
@@ -124,7 +123,8 @@ const UsersTable = () => {
         }
     }
     const showModal = () => {
-        SetIsCreateModalOpen(true);
+        setStatus("CREATE")
+        SetIsModalOpen(true);
     }
     const handleOnChangePage = async (page: number, pageSize: number) => {
         const response1 = await fetch(`http://localhost:8000/api/v1/users?current=${page}&pageSize=${pageSize}`, {
@@ -165,18 +165,17 @@ const UsersTable = () => {
             }}
             columns={columns} dataSource={users} rowKey={"_id"} />
 
-        <CreateUserModal
+        <UserModal
+            setStatus={setStatus}
+            status={status}
             access_token={access_token}
             getData={getData}
-            isCreateModalOpen={isCreateModalOpen}
-            SetIsCreateModalOpen={SetIsCreateModalOpen} />
-        <UpdateUserModal
+            isModalOpen={isModalOpen}
+            SetIsModalOpen={SetIsModalOpen}
+            //update info
             setDataUpdate={setDataUpdate}
             dataUpdate={dataUpdate}
-            access_token={access_token}
-            getData={getData}
-            isUpdateModalOpen={isUpdateModalOpen}
-            SetIsUpdateModalOpen={SetIsUpdateModalOpen} />
+        />
     </>)
 }
 export default UsersTable

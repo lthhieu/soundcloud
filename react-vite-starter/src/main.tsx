@@ -1,12 +1,12 @@
 
 import ReactDOM from 'react-dom/client'
+import React from 'react'
 import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom"
 import UserPage from './screens/users.page.tsx'
 import App from './App.tsx'
-import { StrictMode } from 'react'
 import LayoutAdmin from './components/layout/layout.admin.tsx'
 
 const router = createBrowserRouter([
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 
-  <StrictMode>
+  <React.StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </React.StrictMode>
 )
