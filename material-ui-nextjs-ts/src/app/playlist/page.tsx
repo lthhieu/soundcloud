@@ -1,4 +1,4 @@
 const PlaylistPage = () => {
-    return (<>Profile</>)
+    return (<>Playlist</>)
 }
 export default PlaylistPage
