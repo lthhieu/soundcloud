@@ -20,6 +20,8 @@ import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import UploadIcon from '@mui/icons-material/Upload';
 import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
+import { useRouter } from 'next/navigation'
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -32,7 +34,7 @@ const Search = styled('div')(({ theme }) => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '60ch',
     },
 }));
 
@@ -61,6 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -125,7 +128,7 @@ export default function AppHeader() {
         >
             <MenuItem sx={{
                 "a": { textDecoration: 'none', color: 'inherit' }
-            }}> <Link href={'/profile'}>
+            }}> <Link onClick={handleMenuClose} href={'/profile'}>
                     <IconButton size="large" color="inherit"
                     >
                         <PersonIcon />
@@ -181,7 +184,7 @@ export default function AppHeader() {
         >
             <MenuItem onClick={handleMenuClose} sx={{
                 "a": { textDecoration: 'none', color: 'inherit' }
-            }}><Link href={'/playlist'}>
+            }}><Link onClick={handleMenuClose} href={'/playlist'}>
                     <IconButton size="large" color="inherit"
                     >
                         <QueueMusicIcon />
@@ -190,7 +193,7 @@ export default function AppHeader() {
             </MenuItem>
             <MenuItem onClick={handleMenuClose} sx={{
                 "a": { textDecoration: 'none', color: 'inherit' }
-            }}><Link href={'/like'}>
+            }}><Link onClick={handleMenuClose} href={'/like'}>
                     <IconButton size="large" color="inherit"
                     >
                         <FavoriteIcon />
@@ -199,7 +202,7 @@ export default function AppHeader() {
             </MenuItem>
             <MenuItem onClick={handleMenuClose} sx={{
                 "a": { textDecoration: 'none', color: 'inherit' }
-            }}><Link href={'/upload'}>
+            }}><Link onClick={handleMenuClose} href={'/upload'}>
                     <IconButton size="large" color="inherit"
                     >
                         <UploadIcon />
@@ -209,7 +212,7 @@ export default function AppHeader() {
             <Divider />
             <MenuItem sx={{
                 "a": { textDecoration: 'none', color: 'inherit' }
-            }}><Link href={'/profile'}>
+            }}><Link onClick={handleMenuClose} href={'/profile'}>
                     <IconButton size="large" color="inherit"
                     >
                         <PersonIcon />
@@ -235,11 +238,23 @@ export default function AppHeader() {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer', color: '#f50', '&:hover': { color: '#f70' }, "a": { color: 'unset', textDecoration: 'none' } }}
+                            sx={{ display: { xs: 'none', sm: 'none', md: 'block' }, cursor: 'pointer', color: '#f50', '&:hover': { color: '#f70' }, "a": { color: 'unset', textDecoration: 'none' } }}
                         >
                             <Link href={'/'}>SoundCloud</Link>
                         </Typography>
-                        <Search>
+                        <Box sx={{ display: { sm: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-label="homepage"
+                                aria-controls={mobileMenuId}
+                                aria-haspopup="true"
+                                onClick={() => router.push('/')}
+                                style={{ color: '#f50' }}
+                            >
+                                <HomeIcon />
+                            </IconButton>
+                        </Box>
+                        <Search >
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>
