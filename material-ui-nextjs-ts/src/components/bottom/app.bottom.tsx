@@ -28,7 +28,7 @@ const AppBottom = () => {
         return (<></>)
     }
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, mt: '100px' }}>
             <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
                 <Container>
                     <Toolbar sx={{ display: 'flex', gap: 2 }}>
@@ -46,12 +46,10 @@ const AppBottom = () => {
                                     backgroundColor: '#f2f2f2', boxShadow: 'none'
                                 }}
                                 autoPlay
-                                src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
-                                onPlay={e => console.log("onPlay")}
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
                             // other props here
                             />
                         </Box>
-                        {/* <Box sx={{ flexGrow: 1 }} /> */}
                         <Box >
                             <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' }, fontWeight: '500' }} noWrap variant="subtitle1" color={'#999999'}>
                                 Ly Tran Hoang Hieu
