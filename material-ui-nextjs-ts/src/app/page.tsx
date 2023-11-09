@@ -1,8 +1,13 @@
 import HomepageSlider from "@/components/slider/homepage.slider";
 import { Container } from "@mui/material";
 import { sendRequest } from '@/utils/api'
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export default async function HomePage() {
 
+  const session = await getServerSession(authOptions) //session phía server
+
+  console.log('check session', session)
   const chills = await sendRequest<IBackendResponse<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
     method: 'POST',

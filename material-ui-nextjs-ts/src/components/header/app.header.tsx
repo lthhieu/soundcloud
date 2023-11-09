@@ -22,6 +22,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from 'next/navigation'
+import { useSession, signIn, signOut } from "next-auth/react"
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -63,6 +64,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const { data: session } = useSession()//session phía client
+
     const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -274,29 +277,37 @@ export default function AppHeader() {
                             alignItems: 'center',
                             gap: '2rem'
                         }}>
-                            <Typography
+                            {session ? <>
+                                <Typography
+                                    noWrap
+                                    component="div"
+                                >
+                                    <Link href="/playlist">Playlists</Link>
+                                </Typography>
+                                <Typography
+                                    noWrap
+                                    component="div"
+                                >
+                                    <Link href="/like">Likes</Link>
+                                </Typography>
+                                <Typography
+                                    noWrap
+                                    component="div"
+                                >
+                                    <Link href="/upload">Upload</Link>
+                                </Typography>
+                                <IconButton
+                                    onClick={handleProfileMenuOpen}
+                                >
+                                    <Avatar>H</Avatar>
+                                </IconButton>
+                            </> : <> <Typography
                                 noWrap
                                 component="div"
                             >
-                                <Link href="/playlist">Playlists</Link>
-                            </Typography>
-                            <Typography
-                                noWrap
-                                component="div"
-                            >
-                                <Link href="/like">Likes</Link>
-                            </Typography>
-                            <Typography
-                                noWrap
-                                component="div"
-                            >
-                                <Link href="/upload">Upload</Link>
-                            </Typography>
-                            <IconButton
-                                onClick={handleProfileMenuOpen}
-                            >
-                                <Avatar>H</Avatar>
-                            </IconButton>
+                                <Link href="/api/auth/signin">Login</Link>
+                            </Typography></>}
+
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
