@@ -4,5 +4,6 @@ export async function GET(request: NextRequest, response: NextResponse) {
     const searchParams = new URLSearchParams(url.search);
     const audio = searchParams.get("audio")
     // return Response.json({ data: 'hieu' })
+    console.log('rul', url)
     return await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${audio}`)
 }

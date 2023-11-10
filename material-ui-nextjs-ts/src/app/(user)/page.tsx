@@ -6,8 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export default async function HomePage() {
 
   const session = await getServerSession(authOptions) //session phía server
-
-  console.log('check session', session)
+  console.log('check session from server', session)
   const chills = await sendRequest<IBackendResponse<ITrackTop[]>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
     method: 'POST',

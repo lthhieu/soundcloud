@@ -65,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
     const { data: session } = useSession()//session phía client
-
+    console.log('>>check session from app header', session)
     const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -138,7 +138,10 @@ export default function AppHeader() {
                     </IconButton>
                     Profile</Link>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={() => {
+                signOut()
+                handleMenuClose()
+            }}>
                 <IconButton size="large" color="inherit"
                 >
                     <Logout />
@@ -305,7 +308,7 @@ export default function AppHeader() {
                                 noWrap
                                 component="div"
                             >
-                                <Link href="/api/auth/signin">Login</Link>
+                                <Link onClick={() => { signIn() }} href="#">Login</Link>
                             </Typography></>}
 
                         </Box>
