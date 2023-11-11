@@ -45,7 +45,7 @@ const AppBottom = () => {
                                 style={{
                                     backgroundColor: '#f2f2f2', boxShadow: 'none'
                                 }}
-                                autoPlay
+                                // autoPlay
                                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
                             // other props here
                             />

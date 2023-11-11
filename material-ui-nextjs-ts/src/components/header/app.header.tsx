@@ -308,7 +308,7 @@ export default function AppHeader() {
                                 noWrap
                                 component="div"
                             >
-                                <Link href="/auth/signin">Login</Link>
+                                <Link href="/auth/signin">Sign In</Link>
                             </Typography></>}
 
                         </Box>
