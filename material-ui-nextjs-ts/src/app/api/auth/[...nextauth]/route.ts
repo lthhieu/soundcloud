@@ -6,7 +6,6 @@ import { sendRequest } from "@/utils/api"
 import { JWT } from "next-auth/jwt"
 export const authOptions: AuthOptions = {
     secret: process.env.NO_SECRET,
-    // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
@@ -82,7 +81,10 @@ export const authOptions: AuthOptions = {
             }
             return session
         }
-    }
+    },
+    // pages: {
+    //     signIn: '/auth/signin'
+    // }
 }
 const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }

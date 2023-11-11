@@ -308,7 +308,7 @@ export default function AppHeader() {
                                 noWrap
                                 component="div"
                             >
-                                <Link onClick={() => { signIn() }} href="#">Login</Link>
+                                <Link href="/auth/signin">Login</Link>
                             </Typography></>}
 
                         </Box>
