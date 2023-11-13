@@ -21,7 +21,7 @@ const UsersTable = () => {
     const access_token = localStorage.getItem('access_token') as string
     const [meta, setMeta] = useState({
         current: 1, // trang hiện tại muốn hiển thị
-        pageSize: 2, // số records trong 1 trang
+        pageSize: 3, // số records trong 1 trang
         pages: 0, // tổng số trang
         total: 0 // tổng số record
     })
@@ -29,6 +29,13 @@ const UsersTable = () => {
         deleteUser(_id)
     };
     const columns: ColumnsType<IUsers> = [
+        {
+            title: '#',
+            dataIndex: '_id',
+            render: (value, record, index) => {
+                return (<>{((meta.current - 1) * meta.pageSize) + index + 1}</>)
+            }
+        },
         {
             title: 'Email',
             dataIndex: 'email',
@@ -43,10 +50,7 @@ const UsersTable = () => {
             dataIndex: 'role',
             responsive: ['sm'],
             render: (_, { role }) => (
-                <>
-                    {role === 'ADMIN' ? <Tag color='green' key={role}>{role}</Tag> :
-                        <Tag color='geekblue' key={role}>{role}</Tag>
-                    }
+                <><Tag color={role === 'ADMIN' ? 'green' : 'geekblue'} key={role}>{role}</Tag>
                 </>
             ),
         }, {
@@ -160,7 +164,7 @@ const UsersTable = () => {
                 total: meta.total,
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                 onChange: (page: number, pageSize: number) => handleOnChangePage(page, pageSize),
-                pageSizeOptions: [2, 5, 10],
+                pageSizeOptions: [3, 5, 10],
                 showSizeChanger: true,
             }}
             columns={columns} dataSource={users} rowKey={"_id"} />

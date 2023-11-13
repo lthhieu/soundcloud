@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Layout, Menu, theme } from 'antd'
 import { Link } from "react-router-dom"
-import { TeamOutlined, HomeOutlined } from '@ant-design/icons';
+import { TeamOutlined, HomeOutlined, BarChartOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Outlet } from "react-router-dom"
 const { Header, Content, Sider } = Layout;
@@ -15,6 +15,11 @@ const items: MenuProps['items'] = [
         label: <Link to="/users">Users</Link>,
         key: 'users',
         icon: <TeamOutlined />,
+    },
+    {
+        label: <Link to="/tracks">Tracks</Link>,
+        key: 'tracks',
+        icon: <BarChartOutlined />,
     }
 ];
 const LayoutAdmin = () => {

@@ -8,6 +8,7 @@ import {
 import UserPage from './screens/users.page.tsx'
 import App from './App.tsx'
 import LayoutAdmin from './components/layout/layout.admin.tsx'
+import TrackPage from './screens/tracks.page.tsx'
 
 const router = createBrowserRouter([
   {
@@ -16,11 +17,14 @@ const router = createBrowserRouter([
     children: [{ index: true, element: <App /> }, {
       path: "users",
       element: <UserPage />,
+    }, {
+      path: "tracks",
+      element: <TrackPage />,
     }]
   },
   {
-    path: "/tracks",
-    element: <>Tracks</>,
+    path: "/example",
+    element: <>Example</>,
   },
 ])
 
