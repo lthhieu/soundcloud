@@ -8,8 +8,8 @@ const SignInPage = async () => {
     if (session) {
         return redirect('/')
     }
-    return (<AuthSignIn />
-
+    return (
+        <AuthSignIn />
     );
 }
 export default SignInPage

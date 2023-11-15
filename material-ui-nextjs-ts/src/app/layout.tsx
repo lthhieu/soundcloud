@@ -1,5 +1,6 @@
 import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry'
 import AuthProvider from '@/lib/auth.provider'
+import { ToastProvider } from '@/utils/use-toast-mui';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +8,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <AuthProvider>
-            {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
           </AuthProvider>
         </ThemeRegistry>
       </body>

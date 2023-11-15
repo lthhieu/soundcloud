@@ -297,7 +297,7 @@ export default function AppHeader() {
                                     noWrap
                                     component="div"
                                 >
-                                    <Link href="/upload">Upload</Link>
+                                    <Link href="/track/upload">Upload</Link>
                                 </Typography>
                                 <IconButton
                                     onClick={handleProfileMenuOpen}

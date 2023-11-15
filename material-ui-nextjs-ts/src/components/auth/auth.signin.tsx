@@ -81,9 +81,8 @@ const AuthSignIn = () => {
         }
     }
     return (
-
         <Container>
-            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+            <Snackbar open={open} autoHideDuration={5000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>{alertErrorSignIn}</Alert>
             </Snackbar>
             <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
