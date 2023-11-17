@@ -3,7 +3,7 @@ export { }
 declare global {
     interface IRequest {
         url: string,
-        method: string,
+        method?: string,
         body?: { [key: string]: any },
         queryParams?: any,
         useCredentials?: boolean,
@@ -44,5 +44,12 @@ declare global {
         "isDeleted": boolean,
         "createdAt": string,
         "updatedAt": string
+    }
+    interface IExtendITrackTop extends ITrackTop {
+        isPlaying: boolean
+    }
+    interface ITrackContext {
+        currentTrack: IExtendITrackTop,
+        setCurrentTrack: (v: IExtendITrackTop) => void
     }
 }

@@ -5,8 +5,16 @@ import { useWavesurfer } from '@/utils/customHook'
 import { WaveSurferOptions } from 'wavesurfer.js'
 import { Box, Tooltip } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-const WaveTrack = () => {
+import PauseIcon from '@mui/icons-material/Pause'
+import { useTrackContext } from '@/lib/context.provider'
+interface IProps {
+    track: ITrackTop | null
+}
+const WaveTrack = (props: IProps) => {
+    const { track } = props
+    console.log('>>track', track)
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
+
     //div chứa waveform
     const ref = useRef<HTMLDivElement>(null)
     const timeRef = useRef<HTMLSpanElement>(null)
@@ -126,18 +134,32 @@ const WaveTrack = () => {
         const value = (moment / 199) * 100
         return `${value}%`
     }
-
-
+    useEffect(() => {
+        if (wavesurfer && currentTrack?.isPlaying) {
+            wavesurfer.pause()
+        }
+    }, [currentTrack])
+    useEffect(() => {
+        if (track?._id && !currentTrack?._id) {
+            console.log('>>track change')
+            setCurrentTrack({ ...track, isPlaying: false })
+        }
+    }, [track])
     return (<>
         <Box sx={{ display: 'flex', height: 400, background: 'linear-gradient(135deg, rgb(106, 112, 67) 0%, rgb(11, 15, 20) 100%)' }}>
             <Box sx={{ width: "75%", display: "flex", flexDirection: 'column', justifyContent: 'space-between', marginY: '2rem', marginLeft: '2rem' }}>
                 <Box sx={{ display: 'flex', gap: 3 }}>
-                    <Box onClick={onPlayClick} sx={{ cursor: "pointer", background: '#f70', "&:hover": { background: '#f50' }, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '50%', width: '3rem', height: '3rem' }}>
+                    <Box onClick={() => {
+                        onPlayClick()
+                        if (track && wavesurfer) {
+                            setCurrentTrack({ ...currentTrack, isPlaying: false })
+                        }
+                    }} sx={{ cursor: "pointer", background: '#f70', "&:hover": { background: '#f50' }, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '50%', width: '3rem', height: '3rem' }}>
                         {isPlaying ? <PauseIcon sx={{ fontSize: 40, color: 'white' }} /> : <PlayArrowIcon sx={{ fontSize: 40, color: 'white' }} />}
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Box sx={{ fontSize: '24px', color: '#fff', backgroundColor: 'rgba(0,0,0,.8)', padding: ' 4px 7px', width: 'fit-content' }}>Ai chung tình được mãi</Box>
-                        <Box sx={{ fontSize: '12px', color: '#fff', backgroundColor: 'rgba(0,0,0,.8)', padding: ' 4px 7px', width: 'fit-content' }}>Lý Trần Hoàng Hiếu</Box>
+                        <Box sx={{ fontSize: '24px', color: '#fff', backgroundColor: 'rgba(0,0,0,.8)', padding: ' 4px 7px', width: 'fit-content' }}>{track?.title}</Box>
+                        <Box sx={{ fontSize: '12px', color: '#fff', backgroundColor: 'rgba(0,0,0,.8)', padding: ' 4px 7px', width: 'fit-content' }}>{track?.description}</Box>
                     </Box>
                 </Box>
                 <Box sx={{ cursor: 'pointer', position: 'relative', "&:hover": { ".hover-waveform": { opacity: 0.7 } } }} ref={ref}>

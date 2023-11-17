@@ -39,7 +39,7 @@ export const Toast: FC<ToastProps> = ({
             open={open}
             onClose={handleClose}
             TransitionProps={{ onExited }}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
             autoHideDuration={autoHideDuration ?? 5000}
             {...props}
         >

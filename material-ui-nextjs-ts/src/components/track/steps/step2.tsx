@@ -129,6 +129,10 @@ const Step2 = (props: IProps) => {
             setDescriptionMess('Description is not be empty')
             return
         }
+        if (!info.imgUrl) {
+            toast.error('Please upload an image')
+            return
+        }
         const newTrack = await sendRequest<IBackendResponse<ITrackTop[]>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
             method: 'POST',

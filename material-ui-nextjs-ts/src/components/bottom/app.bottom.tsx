@@ -10,11 +10,24 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import { useHasMounted } from '@/utils/customHook';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useTrackContext } from '@/lib/context.provider';
+import { useToast } from '@/utils/use-toast-mui';
 const AppBottom = () => {
+    const toast = useToast()
+    const playerRef = useRef(null)
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     const hasMounted = useHasMounted()
     const [like, setLike] = useState(false)
     const [follow, setFollow] = useState(false)
+    if (currentTrack?.isPlaying) {
+        //@ts-ignore
+        playerRef?.current?.audio?.current?.play()
+    }
+    else {
+        //@ts-ignore
+        playerRef?.current?.audio?.current?.pause()
+    }
     const handleClickLikeButton = () => {
         setLike(!like)
     }
@@ -22,7 +35,7 @@ const AppBottom = () => {
         setFollow(!follow)
     }
     const handleClickNextup = () => {
-        alert('next up!')
+        toast.success('next up!')
     }
     if (!hasMounted) {
         return (<></>)
@@ -38,24 +51,31 @@ const AppBottom = () => {
                             ".rhap_progress-filled": { backgroundColor: '#f50' },
                             ".rhap_progress-indicator": { background: '#f50' },
                             ".rhap_volume-indicator": { background: '#f50' },
-                            ".rhap_button-clear": { color: '#333333' }
+                            ".rhap_button-clear": { color: '#333333' },
+                            ".rhap_main": { gap: '1rem' }
                         }}>
                             <AudioPlayer
+                                ref={playerRef}
                                 layout='horizontal-reverse'
+                                volume={0.5}
                                 style={{
                                     backgroundColor: '#f2f2f2', boxShadow: 'none'
                                 }}
-                                // autoPlay
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
-                            // other props here
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
+                                onPlay={() => {
+                                    setCurrentTrack({ ...currentTrack, isPlaying: true })
+                                }}
+                                onPause={() => {
+                                    setCurrentTrack({ ...currentTrack, isPlaying: false })
+                                }}
                             />
                         </Box>
                         <Box >
                             <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' }, fontWeight: '500' }} noWrap variant="subtitle1" color={'#999999'}>
-                                Ly Tran Hoang Hieu
+                                {currentTrack.title}
                             </Typography>
                             <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' } }} noWrap variant="subtitle2" color={'#666666'}>
-                                Ai chung tình được mãi
+                                {currentTrack.description}
                             </Typography>
                         </Box>
                         <Tooltip title='Like'>
@@ -68,7 +88,6 @@ const AppBottom = () => {
                         <Tooltip title='Next up'>
                             <PlaylistPlayIcon onClick={() => { handleClickNextup() }} sx={{ cursor: 'pointer', color: '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
                         </Tooltip>
-
                     </Toolbar>
                 </Container>
             </AppBar>
