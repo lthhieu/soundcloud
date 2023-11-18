@@ -120,8 +120,6 @@ const WaveTrack = (props: IProps) => {
         if (wavesurfer && currentTrack?.isPlaying) {
             wavesurfer.pause()
         }
-        //fix wavesurfer is undefined
-        router.refresh()
     }, [currentTrack])
     useEffect(() => {
         if (track?._id && !currentTrack?._id) {
