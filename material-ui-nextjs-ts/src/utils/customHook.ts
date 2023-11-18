@@ -19,7 +19,6 @@ export const useWavesurfer = (
     // or any of the props change
     useEffect(() => {
         if (!ref.current) return
-
         const ws = WaveSurfer.create({
             ...options,
             container: ref.current,

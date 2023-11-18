@@ -74,3 +74,10 @@ export const sendRequestFile = async <T>(props: IRequest) => {
         }
     });
 };
+
+export const fetchDefaultImages = (type: string) => {
+    if (type === 'GITHUB') return '/users/default-github.png'
+    if (type === 'GOOGLE') return '/users/default-google.png'
+    if (type === 'SYSTEM') return '/users/default-user.png'
+    return type
+}

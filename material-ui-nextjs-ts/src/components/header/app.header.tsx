@@ -23,6 +23,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from 'next/navigation'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { fetchDefaultImages } from '@/utils/api';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -302,7 +303,8 @@ export default function AppHeader() {
                                 <IconButton
                                     onClick={handleProfileMenuOpen}
                                 >
-                                    <Avatar>H</Avatar>
+                                    <img src={fetchDefaultImages(session.user.image ?? session.user.type)} style={{ width: 45, height: 45, borderRadius: '50%' }} />
+                                    {/* <Avatar>H</Avatar> */}
                                 </IconButton>
                             </> : <> <Typography
                                 noWrap

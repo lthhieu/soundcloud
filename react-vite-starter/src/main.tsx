@@ -9,6 +9,7 @@ import UserPage from './screens/users.page.tsx'
 import App from './App.tsx'
 import LayoutAdmin from './components/layout/layout.admin.tsx'
 import TrackPage from './screens/tracks.page.tsx'
+import CommentPage from './screens/comments.page.tsx'
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,9 @@ const router = createBrowserRouter([
     }, {
       path: "tracks",
       element: <TrackPage />,
+    }, {
+      path: "comments",
+      element: <CommentPage />,
     }]
   },
   {

@@ -37,61 +37,68 @@ const AppBottom = () => {
     const handleClickNextup = () => {
         toast.success('next up!')
     }
+
     if (!hasMounted) {
         return (<></>)
     }
     return (
-        <Box sx={{ flexGrow: 1, mt: '100px' }}>
-            <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
-                <Container>
-                    <Toolbar sx={{ display: 'flex', gap: 2 }}>
-                        <Box sx={{
-                            width: '100%',
-                            ".rhap_time": { color: '#f50' },
-                            ".rhap_progress-filled": { backgroundColor: '#f50' },
-                            ".rhap_progress-indicator": { background: '#f50' },
-                            ".rhap_volume-indicator": { background: '#f50' },
-                            ".rhap_button-clear": { color: '#333333' },
-                            ".rhap_main": { gap: '1rem' }
-                        }}>
-                            <AudioPlayer
-                                ref={playerRef}
-                                layout='horizontal-reverse'
-                                volume={0.5}
-                                style={{
-                                    backgroundColor: '#f2f2f2', boxShadow: 'none'
-                                }}
-                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
-                                onPlay={() => {
-                                    setCurrentTrack({ ...currentTrack, isPlaying: true })
-                                }}
-                                onPause={() => {
-                                    setCurrentTrack({ ...currentTrack, isPlaying: false })
-                                }}
-                            />
-                        </Box>
-                        <Box >
-                            <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' }, fontWeight: '500' }} noWrap variant="subtitle1" color={'#999999'}>
-                                {currentTrack.title}
-                            </Typography>
-                            <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' } }} noWrap variant="subtitle2" color={'#666666'}>
-                                {currentTrack.description}
-                            </Typography>
-                        </Box>
-                        <Tooltip title='Like'>
-                            <FavoriteIcon onClick={() => { handleClickLikeButton() }} sx={{ cursor: 'pointer', color: like ? '#f50' : '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
-                        </Tooltip>
-                        <Tooltip title='Follow'>
-                            {follow ? <BookmarkAddedIcon onClick={() => { handleClickFollowButton() }} sx={{ cursor: 'pointer', color: '#f50', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
-                                : <BookmarkIcon onClick={() => { handleClickFollowButton() }} sx={{ cursor: 'pointer', color: '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />}
-                        </Tooltip>
-                        <Tooltip title='Next up'>
-                            <PlaylistPlayIcon onClick={() => { handleClickNextup() }} sx={{ cursor: 'pointer', color: '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
-                        </Tooltip>
-                    </Toolbar>
-                </Container>
-            </AppBar>
-        </Box>
+        <>
+            <Box sx={{
+                flexGrow: 1, mt: '100px',
+                // transition: 'transform .2s ease-out',
+                // transform: currentTrack._id ? 'translateY(100%)' : 'translateY(0)',
+            }}>
+                <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
+                    <Container>
+                        <Toolbar sx={{ display: 'flex', gap: 2 }}>
+                            <Box sx={{
+                                width: '100%',
+                                ".rhap_time": { color: '#f50' },
+                                ".rhap_progress-filled": { backgroundColor: '#f50' },
+                                ".rhap_progress-indicator": { background: '#f50' },
+                                ".rhap_volume-indicator": { background: '#f50' },
+                                ".rhap_button-clear": { color: '#333333' },
+                                ".rhap_main": { gap: '1rem' }
+                            }}>
+                                <AudioPlayer
+                                    ref={playerRef}
+                                    layout='horizontal-reverse'
+                                    volume={0.5}
+                                    autoPlay
+                                    style={{
+                                        backgroundColor: '#f2f2f2', boxShadow: 'none'
+                                    }}
+                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
+                                    onPlay={() => {
+                                        setCurrentTrack({ ...currentTrack, isPlaying: true })
+                                    }}
+                                    onPause={() => {
+                                        setCurrentTrack({ ...currentTrack, isPlaying: false })
+                                    }}
+                                />
+                            </Box>
+                            <Box >
+                                <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' }, fontWeight: '500' }} noWrap variant="subtitle1" color={'#999999'}>
+                                    {currentTrack.title}
+                                </Typography>
+                                <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' } }} noWrap variant="subtitle2" color={'#666666'}>
+                                    {currentTrack.description}
+                                </Typography>
+                            </Box>
+                            <Tooltip title='Like'>
+                                <FavoriteIcon onClick={() => { handleClickLikeButton() }} sx={{ cursor: 'pointer', color: like ? '#f50' : '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
+                            </Tooltip>
+                            <Tooltip title='Follow'>
+                                {follow ? <BookmarkAddedIcon onClick={() => { handleClickFollowButton() }} sx={{ cursor: 'pointer', color: '#f50', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
+                                    : <BookmarkIcon onClick={() => { handleClickFollowButton() }} sx={{ cursor: 'pointer', color: '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />}
+                            </Tooltip>
+                            <Tooltip title='Next up'>
+                                <PlaylistPlayIcon onClick={() => { handleClickNextup() }} sx={{ cursor: 'pointer', color: '#333333', "&:hover": { opacity: '0.9', transitionDuration: '0.2s' } }} />
+                            </Tooltip>
+                        </Toolbar>
+                    </Container>
+                </AppBar>
+            </Box></>
     )
 }
 export default AppBottom

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Layout, Menu, theme } from 'antd'
 import { Link } from "react-router-dom"
-import { TeamOutlined, HomeOutlined, BarChartOutlined } from '@ant-design/icons';
+import { TeamOutlined, HomeOutlined, BarChartOutlined, CommentOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Outlet } from "react-router-dom"
 const { Header, Content, Sider } = Layout;
@@ -20,6 +20,10 @@ const items: MenuProps['items'] = [
         label: <Link to="/tracks">Tracks</Link>,
         key: 'tracks',
         icon: <BarChartOutlined />,
+    }, {
+        label: <Link to="/comments">Comments</Link>,
+        key: 'comments',
+        icon: <CommentOutlined />,
     }
 ];
 const LayoutAdmin = () => {

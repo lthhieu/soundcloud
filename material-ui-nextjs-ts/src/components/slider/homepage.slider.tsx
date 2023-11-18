@@ -92,7 +92,8 @@ const HomepageSlider = (props: IProps) => {
                 padding: "0 10px",
                 "img": {
                     height: 150,
-                    width: 150
+                    width: 150,
+                    objectFit: 'cover'
                 }
             },
         }}>

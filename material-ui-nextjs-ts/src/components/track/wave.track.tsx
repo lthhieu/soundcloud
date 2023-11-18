@@ -1,20 +1,24 @@
 'use client'
 import { useRef, useMemo, useCallback, useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useWavesurfer } from '@/utils/customHook'
 import { WaveSurferOptions } from 'wavesurfer.js'
 import { Box, Tooltip } from '@mui/material'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause'
 import { useTrackContext } from '@/lib/context.provider'
+import { fetchDefaultImages, sendRequest } from '@/utils/api'
+import CommentTrack from './comment.track'
+import LikeTrack from './like.track'
 interface IProps {
-    track: ITrackTop | null
+    track: ITrackTop | null,
+    arrComments: ITrackComment[] | null,
+    likedTracks: ITrackLike[] | undefined
 }
 const WaveTrack = (props: IProps) => {
-    const { track } = props
-    console.log('>>track', track)
+    const firstViewRef = useRef(true)
+    const { track, arrComments, likedTracks } = props
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
-
     //div chứa waveform
     const ref = useRef<HTMLDivElement>(null)
     const timeRef = useRef<HTMLSpanElement>(null)
@@ -25,7 +29,7 @@ const WaveTrack = (props: IProps) => {
     const audio = searchParams.get('audio')
     //state play/pause
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
-
+    const router = useRouter()
     //dùng useMemo để ngăn vòng lặp vô hạn
     const memo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         let gradient, progressGradient
@@ -106,32 +110,9 @@ const WaveTrack = (props: IProps) => {
             subscriptions.forEach((unsub) => unsub())
         }
     }, [wavesurfer])
-
-    const arrComments = [
-        {
-            id: 1,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 10,
-            user: "username 1",
-            content: "just a comment1"
-        },
-        {
-            id: 2,
-            avatar: "http://localhost:8000/images/workout1.png",
-            moment: 11,
-            user: "username 2",
-            content: "just a comment3"
-        },
-        {
-            id: 3,
-            avatar: "http://localhost:8000/images/party1.png",
-            moment: 90,
-            user: "username 3",
-            content: "just a comment3"
-        },
-    ]
     const calcLeft = (moment: number) => {
-        const value = (moment / 199) * 100
+        const duration = wavesurfer?.getDuration() ?? 0
+        const value = (moment / duration) * 100
         return `${value}%`
     }
     useEffect(() => {
@@ -141,16 +122,29 @@ const WaveTrack = (props: IProps) => {
     }, [currentTrack])
     useEffect(() => {
         if (track?._id && !currentTrack?._id) {
-            console.log('>>track change')
             setCurrentTrack({ ...track, isPlaying: false })
         }
     }, [track])
+    const handleIncreaseView = async () => {
+        if (firstViewRef.current) {
+            await sendRequest<IBackendResponse<any>>({
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
+                method: 'POST',
+                body: {
+                    trackId: track?._id
+                }
+            })
+            router.refresh()
+            firstViewRef.current = false
+        }
+    }
     return (<>
         <Box sx={{ display: 'flex', height: 400, background: 'linear-gradient(135deg, rgb(106, 112, 67) 0%, rgb(11, 15, 20) 100%)' }}>
             <Box sx={{ width: "75%", display: "flex", flexDirection: 'column', justifyContent: 'space-between', marginY: '2rem', marginLeft: '2rem' }}>
                 <Box sx={{ display: 'flex', gap: 3 }}>
                     <Box onClick={() => {
                         onPlayClick()
+                        handleIncreaseView()
                         if (track && wavesurfer) {
                             setCurrentTrack({ ...currentTrack, isPlaying: false })
                         }
@@ -168,8 +162,8 @@ const WaveTrack = (props: IProps) => {
                     <Box ref={hoverDivRef} sx={{ position: 'absolute', zIndex: 3, opacity: 0, transition: 'opacity 0.2s ease', background: 'rgba(255,255,255,0.1)', height: '70%' }} className="hover-waveform"></Box>
                     <Box sx={{ position: 'absolute', bottom: 0, backdropFilter: 'brightness(0.5)', width: '100%', height: '30px' }}></Box>
                     <Box>
-                        {arrComments.map(item => {
-                            return (<Tooltip title={item.content} arrow key={item.id}>
+                        {(arrComments !== null && arrComments.length > 0) && arrComments.map(item => {
+                            return (<Tooltip title={item.content} arrow key={item._id}>
                                 <img
                                     //hover vào img không chạy hoverDivRef
                                     onPointerMove={(e) => {
@@ -190,7 +184,7 @@ const WaveTrack = (props: IProps) => {
                                         //@ts-ignore
                                         e.target.style.boxShadow = 'none'
                                     }}
-                                    src={item.avatar} width={20} height={20} style={{ position: 'absolute', bottom: 10, zIndex: 4, left: calcLeft(item.moment), transition: 'box-shadow 0.3s, border-radius 0.3s' }} />
+                                    src={fetchDefaultImages(item.user.type)} width={20} height={20} style={{ position: 'absolute', bottom: 10, zIndex: 4, left: calcLeft(item.moment), transition: 'box-shadow 0.3s, border-radius 0.3s' }} />
                             </Tooltip>
                             )
                         })}
@@ -198,12 +192,19 @@ const WaveTrack = (props: IProps) => {
                 </Box>
             </Box>
             <Box sx={{ width: "25%", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Box sx={{
-                    background: "#ccc",
-                    width: 250,
-                    height: 250
-                }}></Box>
+                {track?.imgUrl ?
+                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} width={250} height={250} style={{ objectFit: 'cover' }} /> : <Box sx={{
+                        background: "#ccc",
+                        width: 250,
+                        height: 250
+                    }}></Box>}
             </Box>
+        </Box>
+        <Box sx={{ mt: '1rem' }}>
+            <LikeTrack track={track} likedTracks={likedTracks} />
+        </Box>
+        <Box sx={{ mt: '1rem' }}>
+            <CommentTrack arrComments={arrComments} track={track} wavesurfer={wavesurfer} />
         </Box>
     </>)
 }

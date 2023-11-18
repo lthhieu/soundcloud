@@ -52,4 +52,32 @@ declare global {
         currentTrack: IExtendITrackTop,
         setCurrentTrack: (v: IExtendITrackTop) => void
     }
+    interface ITrackComment {
+        "_id": string,
+        "content": string,
+        "moment": number,
+        "user": {
+            "_id": string,
+            "email": string,
+            "name": string,
+            "role": string,
+            "type": string
+        },
+        "track": string,
+        "isDeleted": boolean,
+        "__v": number,
+        "isDeleted": boolean,
+        "createdAt": string,
+        "updatedAt": string
+    }
+    interface ITrackLike {
+        "_id": string,
+        "title": string,
+        "description": string,
+        "category": string,
+        "imgUrl": string,
+        "trackUrl": string,
+        "countLike": number,
+        "countPlay": number
+    }
 }
