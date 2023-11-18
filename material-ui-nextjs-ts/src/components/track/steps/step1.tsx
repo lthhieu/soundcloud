@@ -5,10 +5,8 @@ import './theme.css'
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { useSession, signIn, signOut } from "next-auth/react"
-import { sendRequestFile } from '@/utils/api';
+import { useSession } from "next-auth/react"
 import axios from 'axios';
-
 export const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',

@@ -1,7 +1,7 @@
 import TracksInProfile from "@/components/profile/tracks.in.profile"
 import { sendRequest } from "@/utils/api"
-import { Container, Grid } from "@mui/material"
-import { useState } from "react"
+import Grid from "@mui/material/Grid"
+import Container from "@mui/material/Container"
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     const res = await sendRequest<IBackendResponse<IModelPaginate<ITrackTop>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users?current=1&pageSize=10`,

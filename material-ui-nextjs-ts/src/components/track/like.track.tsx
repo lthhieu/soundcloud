@@ -1,5 +1,7 @@
 'use client'
-import { Box, Chip, Typography } from "@mui/material"
+import Box from "@mui/material/Box"
+import Chip from "@mui/material/Chip"
+import Typography from "@mui/material/Typography"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { sendRequest } from "@/utils/api"
@@ -14,7 +16,7 @@ const LikeTrack = (props: IProps) => {
     const { data: session } = useSession()
     const router = useRouter()
     const handleClick = async () => {
-        const res1 = await sendRequest<IBackendResponse<any>>({
+        await sendRequest<IBackendResponse<any>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
             method: 'POST',
             body: {
@@ -22,7 +24,7 @@ const LikeTrack = (props: IProps) => {
                 track: track?._id
             }, headers: {
                 'Authorization': `Bearer ${session?.access_token}`,
-            }, nextOption: { cache: "no-store" }
+            }
 
         })
         router.refresh()

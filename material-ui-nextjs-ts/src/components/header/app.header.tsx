@@ -12,7 +12,6 @@ import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import Logout from '@mui/icons-material/Logout';
 import Divider from '@mui/material/Divider';
@@ -22,7 +21,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from 'next/navigation'
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import { fetchDefaultImages } from '@/utils/api';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',

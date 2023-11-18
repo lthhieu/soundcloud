@@ -1,13 +1,12 @@
 import WaveTrack from '@/components/track/wave.track'
 import { sendRequest } from '@/utils/api'
-import { Container } from '@mui/material'
+import Container from '@mui/material/Container'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     const session = await getServerSession(authOptions)
     const res = await sendRequest<IBackendResponse<ITrackTop>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
-        nextOption: { cache: "no-store" }
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`
 
     })
     const res1 = await sendRequest<IBackendResponse<IModelPaginate<ITrackComment>>>({

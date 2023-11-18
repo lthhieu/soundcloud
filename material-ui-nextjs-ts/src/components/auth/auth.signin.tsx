@@ -1,6 +1,9 @@
 'use client'
-import * as React from 'react';
-import { Box, Container, TextField, Typography, Chip } from "@mui/material"
+import Box from "@mui/material/Box"
+import Container from "@mui/material/Container"
+import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
+import Chip from "@mui/material/Chip"
 import { useState } from "react"
 import LockIcon from '@mui/icons-material/Lock';
 import InputAdornment from '@mui/material/InputAdornment';

@@ -2,19 +2,19 @@
 import { useEffect, useState } from 'react';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
-import { Box, Button, styled } from '@mui/material';
+import { styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { ColorButton, VisuallyHiddenInput } from './step1';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { TextField } from "@mui/material"
 import MenuItem from '@mui/material/MenuItem';
 import SaveIcon from '@mui/icons-material/Save';
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import axios from 'axios';
-// import Lightbox from 'react-18-image-lightbox';
-// import 'react-18-image-lightbox/style.css';
 import ImageViewer from 'react-simple-image-viewer';
-import { sendRequest, sendRequestFile } from '@/utils/api';
+import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/use-toast-mui';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {

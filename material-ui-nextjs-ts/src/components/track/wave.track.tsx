@@ -3,7 +3,8 @@ import { useRef, useMemo, useCallback, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useWavesurfer } from '@/utils/customHook'
 import { WaveSurferOptions } from 'wavesurfer.js'
-import { Box, Tooltip } from '@mui/material'
+import Tooltip from '@mui/material/Tooltip'
+import Box from '@mui/material/Box'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause'
 import { useTrackContext } from '@/lib/context.provider'
@@ -119,12 +120,19 @@ const WaveTrack = (props: IProps) => {
         if (wavesurfer && currentTrack?.isPlaying) {
             wavesurfer.pause()
         }
+        //fix wavesurfer is undefined
+        router.refresh()
     }, [currentTrack])
     useEffect(() => {
         if (track?._id && !currentTrack?._id) {
             setCurrentTrack({ ...track, isPlaying: false })
         }
+
     }, [track])
+    //fix wavesurfer is undefined
+    // useEffect(() => {
+    //     router.refresh()
+    // }, [])
     const handleIncreaseView = async () => {
         if (firstViewRef.current) {
             await sendRequest<IBackendResponse<any>>({

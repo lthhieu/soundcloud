@@ -1,6 +1,9 @@
 'use client'
 import { useState } from 'react'
-import { Box, Grid, TextField, Typography } from "@mui/material"
+import Box from "@mui/material/Box"
+import Grid from "@mui/material/Grid"
+import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useSession } from "next-auth/react"
