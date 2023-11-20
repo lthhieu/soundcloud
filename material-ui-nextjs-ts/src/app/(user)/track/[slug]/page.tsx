@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import type { Metadata, ResolvingMetadata } from 'next'
 
+
 type Props = {
     params: { slug: string }
 }
@@ -23,7 +24,13 @@ export async function generateMetadata(
 
     return {
         title: tracks.data?.title,
-        description: tracks.data?.description
+        description: tracks.data?.description,
+        openGraph: {
+            title: 'Ly Tran Hoang Hieu with SoundCloud',
+            description: `${tracks.data?.title}`,
+            type: 'website',
+            images: [`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${tracks.data?.imgUrl}`]
+        },
     }
 }
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
