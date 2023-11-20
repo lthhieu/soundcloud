@@ -23,7 +23,7 @@ const WaveTrack = (props: IProps) => {
     //div chứa waveform
     const ref = useRef<HTMLDivElement>(null)
     const timeRef = useRef<HTMLSpanElement>(null)
-    const durationRef = useRef<HTMLSpanElement>(null)
+    const [durationState, setDurationState] = useState('0:00')
     const hoverDivRef = useRef<HTMLDivElement>(null)
     // lấy ra tên audio trên url
     const searchParams = useSearchParams()
@@ -86,7 +86,7 @@ const WaveTrack = (props: IProps) => {
         setIsPlaying(false)
         // thời lượng audio và thơi lượng hiện tại
         const timeEl = timeRef.current!
-        const durationEl = durationRef.current!
+        // const durationEl = durationRef.current!
         // sự kiện hover
         const hover = hoverDivRef.current!
         const waveform = ref.current!
@@ -103,7 +103,7 @@ const WaveTrack = (props: IProps) => {
         const subscriptions = [
             wavesurfer.on('play', () => setIsPlaying(true)),
             wavesurfer.on('pause', () => setIsPlaying(false)),
-            wavesurfer.on('decode', (duration) => (durationEl.textContent = formatTime(duration))),
+            wavesurfer.on('decode', (duration) => (setDurationState(formatTime(duration)))),
             wavesurfer.on('timeupdate', (currentTime) => (timeEl.textContent = formatTime(currentTime)))
         ]
 
@@ -127,10 +127,6 @@ const WaveTrack = (props: IProps) => {
         }
 
     }, [track])
-    //fix wavesurfer is undefined
-    // useEffect(() => {
-    //     router.refresh()
-    // }, [])
     const handleIncreaseView = async () => {
         if (firstViewRef.current) {
             await sendRequest<IBackendResponse<any>>({
@@ -164,7 +160,7 @@ const WaveTrack = (props: IProps) => {
                 </Box>
                 <Box sx={{ cursor: 'pointer', position: 'relative', "&:hover": { ".hover-waveform": { opacity: 0.7 } } }} ref={ref}>
                     <Box ref={timeRef} component={'span'} sx={{ color: "#f70", fontSize: 11, background: '#333333', px: 0.5, position: 'absolute', zIndex: 4, left: 0, top: '55%' }}>0:00</Box>
-                    <Box ref={durationRef} component={'span'} sx={{ color: "#ccc", fontSize: 11, background: '#333333', px: 0.5, position: 'absolute', zIndex: 4, right: 0, top: '55%' }}>0:00</Box>
+                    <Box component={'span'} sx={{ color: "#ccc", fontSize: 11, background: '#333333', px: 0.5, position: 'absolute', zIndex: 4, right: 0, top: '55%' }}>{durationState}</Box>
                     <Box ref={hoverDivRef} sx={{ position: 'absolute', zIndex: 3, opacity: 0, transition: 'opacity 0.2s ease', background: 'rgba(255,255,255,0.1)', height: '70%' }} className="hover-waveform"></Box>
                     <Box sx={{ position: 'absolute', bottom: 0, backdropFilter: 'brightness(0.5)', width: '100%', height: '30px' }}></Box>
                     <Box>
