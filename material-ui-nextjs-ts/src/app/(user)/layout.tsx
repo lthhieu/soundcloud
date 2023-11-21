@@ -14,13 +14,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: 'Ly Tran Hoang Hieu',
     url: `${process.env.NEXTAUTH_URL}`,
     description: 'Build NextJs13 app with Material UI to clone SoundCLoud',
+    inLanguage: 'vi'
   }
+
   return (<>
     <AppHeader />
     {children}
     <AppBottom />
-    <script
-      data-nscript="lazyOnload"
+    <Script
+      strategy="lazyOnload"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
