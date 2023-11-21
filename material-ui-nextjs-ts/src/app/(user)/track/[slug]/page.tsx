@@ -15,7 +15,7 @@ export async function generateMetadata(
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // read route params
-    const slug = params.slug
+    const slug = params?.slug?.split("-")?.pop()?.replace(".html", "") ?? undefined
 
     // fetch data
     const tracks = await sendRequest<IBackendResponse<ITrackTop>>({
@@ -34,9 +34,10 @@ export async function generateMetadata(
     }
 }
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
+    const slug = params?.slug?.split("-")?.pop()?.replace(".html", "") ?? undefined
     const session = await getServerSession(authOptions)
     const res = await sendRequest<IBackendResponse<ITrackTop>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`
 
     })
     const res1 = await sendRequest<IBackendResponse<IModelPaginate<ITrackComment>>>({
@@ -45,7 +46,7 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         queryParams: {
             current: 1,
             pageSize: 10,
-            trackId: params.slug,
+            trackId: slug,
             sort: '-createdAt'
         }
     })
