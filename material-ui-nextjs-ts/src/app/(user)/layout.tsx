@@ -3,8 +3,8 @@ import AppHeader from '@/components/header/app.header'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Title from layout',
-  description: 'title from layout',
+  title: 'Discover songs in SoundCloud',
+  description: 'Discover the top streamed music and songs online on SoundCloud',
 }
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (<>

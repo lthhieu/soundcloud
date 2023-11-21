@@ -44,7 +44,7 @@ const AppBottom = () => {
         return (<></>)
     }
     return (
-        <>
+        <>{currentTrack._id &&
             <Box sx={{
                 flexGrow: 1, mt: '100px',
                 // transition: 'transform .2s ease-out',
@@ -100,7 +100,7 @@ const AppBottom = () => {
                         </Toolbar>
                     </Container>
                 </AppBar>
-            </Box></>
+            </Box>}</>
     )
 }
 export default AppBottom

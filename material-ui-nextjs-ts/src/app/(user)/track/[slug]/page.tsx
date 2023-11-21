@@ -26,8 +26,8 @@ export async function generateMetadata(
         title: tracks.data?.title,
         description: tracks.data?.description,
         openGraph: {
-            title: 'Ly Tran Hoang Hieu with SoundCloud',
-            description: `${tracks.data?.title}`,
+            title: tracks.data?.title,
+            description: tracks.data?.description,
             type: 'website',
             images: [`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${tracks.data?.imgUrl}`]
         },
