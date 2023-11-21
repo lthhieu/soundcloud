@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import { convertStringToSlug } from "@/utils/api";
 interface IProps {
     data: ITrackTop[],
     title: string
@@ -107,7 +108,7 @@ const HomepageSlider = (props: IProps) => {
                 return (<div className="track" key={item._id}>
                     <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`} />
                     <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' }, fontWeight: '400' }} noWrap variant="subtitle1" color={'#999999'} mt={0.5}>
-                        <Link style={{ textDecoration: 'none', color: 'unset' }} href={`/track/${item._id}?audio=${item.trackUrl}&id=${item._id}`}>{item.title}</Link>
+                        <Link style={{ textDecoration: 'none', color: 'unset' }} href={`/track/${convertStringToSlug(item.title)}-${item._id}.html?audio=${item.trackUrl}`}>{item.title}</Link>
                     </Typography>
                     <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' } }} noWrap variant="subtitle2" color={'#666666'}>
                         {item.description}
