@@ -5,7 +5,7 @@ import { ToastProvider } from '@/utils/use-toast-mui';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ margin: 0 }}>
+    <html lang="en" style={{ margin: 0, backgroundColor: '#fff' }}>
       <body>
         <ThemeRegistry>
           <AuthProvider>

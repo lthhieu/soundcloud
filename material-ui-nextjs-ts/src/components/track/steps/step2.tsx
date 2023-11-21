@@ -108,7 +108,7 @@ const Step2 = (props: IProps) => {
                 toast.error(e.response.data.message)
             }
         } else {
-            console.log('ko hop le')
+            toast.error('Invalid image file format')
         }
 
     }
