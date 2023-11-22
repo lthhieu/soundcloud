@@ -4,7 +4,7 @@ import Container from '@mui/material/Container'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import type { Metadata, ResolvingMetadata } from 'next'
-
+import { notFound } from 'next/navigation'
 
 type Props = {
     params: { slug: string }
@@ -61,8 +61,18 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         },
     })
 
+    if (!res.data) {
+        notFound()
+    }
+    if (!res1.data) {
+        notFound()
+    }
+    if (!res2.data) {
+        notFound()
+    }
+
     return (<Container>
-        <WaveTrack track={res?.data ?? null} arrComments={res1.data?.result ?? null} likedTracks={res2.data?.result} />
+        <WaveTrack track={res?.data ?? null} arrComments={res1.data?.result ?? []} likedTracks={res2.data?.result} />
     </Container>)
 }
 export default DetailTrackPage

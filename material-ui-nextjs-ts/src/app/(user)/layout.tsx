@@ -16,7 +16,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     description: 'Build NextJs13 app with Material UI to clone SoundCLoud',
     inLanguage: 'vi'
   }
-
   return (<>
     <AppHeader />
     {children}
