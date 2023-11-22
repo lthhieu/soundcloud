@@ -11,6 +11,7 @@ import { fetchDefaultImages, sendRequest } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import WaveSurfer from 'wavesurfer.js'
 import { useHasMounted } from '@/utils/customHook'
+import Image from 'next/image'
 dayjs.extend(relativeTime)
 interface IProps {
     track: ITrackTop | null,
@@ -61,7 +62,7 @@ const CommentTrack = (props: IProps) => {
         <Grid container spacing={2} sx={{ mt: 2 }}>
             <Grid item md={3}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
-                    <img src={fetchDefaultImages(track?.uploader.type ?? 'SYSTEM')} style={{ width: 220, height: 220, borderRadius: '50%', objectFit: 'cover' }} />
+                    <Image src={fetchDefaultImages(track?.uploader.type ?? 'SYSTEM')} alt='avatar comment' width={220} height={220} style={{ borderRadius: '50%', objectFit: 'cover' }} />
                     <Typography>{track?.uploader?.email}</Typography>
                 </Box>
             </Grid>
@@ -69,9 +70,7 @@ const CommentTrack = (props: IProps) => {
                 {(arrComments !== null && arrComments.length > 0) && arrComments.map(item => {
                     return (<Box key={item._id} sx={{ display: 'flex', justifyContent: 'space-between', mb: '1rem' }}>
                         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-
-                            <img src={fetchDefaultImages(item.user.type)} width={40} height={40} style={{ objectFit: 'cover' }} />
-
+                            <Image src={fetchDefaultImages(item.user.type)} width={40} height={40} style={{ objectFit: 'cover' }} alt='comment' />
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <Typography sx={{ fontSize: '0.8rem' }}>{item.user.email} at <Typography onClick={() => { handleJumpTrack(item.moment) }} sx={{ fontSize: '0.8rem', cursor: 'pointer' }} component={'span'}>{formatTime(item.moment)}</Typography></Typography>
                                 <Typography sx={{ fontSize: '1rem' }}>{item.content}</Typography>

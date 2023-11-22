@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { convertStringToSlug } from "@/utils/api";
+import Image from "next/image";
 interface IProps {
     data: ITrackTop[],
     title: string
@@ -41,7 +42,7 @@ const SampleNextArrow = (props: CustomArrowProps) => {
         <Button onClick={onClick} sx={{
             minWidth: '2rem', width: '2rem', height: '2rem', color: '#666', justifyContent: 'center', border: '#ccc 1px solid',
             '&:hover': { color: '#f50', border: '#f70 1px solid', backgroundColor: '#fff' }, backgroundColor: '#fff',
-            position: 'absolute', top: '40%', transform: 'translateY(-50%)', right: '2rem'
+            position: 'absolute', top: '40%', transform: 'translateY(-50%)', right: '-0.5rem'
         }}><ArrowForwardIosIcon /></Button>
     );
 }
@@ -55,29 +56,22 @@ const HomepageSlider = (props: IProps) => {
         infinite: false,
         speed: 800,
         slidesToShow: 5,
-        slidesToScroll: 4,
+        slidesToScroll: 1,
         prevArrow: <SamplePrevArrow />,
         nextArrow: <SampleNextArrow />,
         responsive: [
             {
-                breakpoint: 1000,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 4
-                }
-            },
-            {
-                breakpoint: 800,
+                breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
-                    slidesToScroll: 3
+                    slidesToScroll: 1
                 }
             },
             {
                 breakpoint: 600,
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll: 2
+                    slidesToScroll: 1
                 }
             },
             {
@@ -94,11 +88,6 @@ const HomepageSlider = (props: IProps) => {
             margin: "0 50px",
             ".track": {
                 padding: "0 10px",
-                "img": {
-                    height: 150,
-                    width: 150,
-                    objectFit: 'cover'
-                }
             },
         }}>
         <h2> {title} </h2>
@@ -106,7 +95,14 @@ const HomepageSlider = (props: IProps) => {
         <Slider {...settings}>
             {data.map((item) => {
                 return (<div className="track" key={item._id}>
-                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`} />
+                    <div style={{
+                        position: "relative",
+                        height: "150px",
+                        width: "100%",
+                    }}
+                    >
+                        <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`} alt="image" fill style={{ objectFit: 'cover' }} />
+                    </div>
                     <Typography sx={{ cursor: 'pointer', "&:hover": { color: '#333' }, fontWeight: '400' }} noWrap variant="subtitle1" color={'#999999'} mt={0.5}>
                         <Link style={{ textDecoration: 'none', color: 'unset' }} href={`/track/${convertStringToSlug(item.title)}-${item._id}.html?audio=${item.trackUrl}`}>{item.title}</Link>
                     </Typography>

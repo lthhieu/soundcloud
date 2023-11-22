@@ -16,6 +16,7 @@ import axios from 'axios';
 import ImageViewer from 'react-simple-image-viewer';
 import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/use-toast-mui';
+import Image from 'next/image';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -171,7 +172,7 @@ const Step2 = (props: IProps) => {
                     <Box sx={{ width: '220px', height: '220px', bgcolor: '#ccc' }}>
                         <div style={{ cursor: 'pointer' }} onClick={() => { handlePreviewImage() }}>
                             {info.imgUrl &&
-                                <img style={{ height: '220px', width: '220px', objectFit: 'cover' }} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />}</div>
+                                <Image alt='img-upload' style={{ height: '220px', width: '220px', objectFit: 'cover' }} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />}</div>
                     </Box>
                     <ColorButton
                         onChange={(e) => {

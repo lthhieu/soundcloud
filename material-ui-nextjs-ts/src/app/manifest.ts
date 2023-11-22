@@ -24,7 +24,7 @@ export default function manifest(): MetadataRoute.Manifest {
         orientation: 'portrait',
         related_applications: [
             {
-                platform: 'wabapp',
+                platform: 'webapp',
                 url: `${process.env.NEXTAUTH_URL}/manifest.json`
             }
         ],

@@ -11,6 +11,7 @@ import { useTrackContext } from '@/lib/context.provider'
 import { fetchDefaultImages, sendRequest } from '@/utils/api'
 import CommentTrack from './comment.track'
 import LikeTrack from './like.track'
+import Image from 'next/image'
 interface IProps {
     track: ITrackTop | null,
     arrComments: ITrackComment[] | null,
@@ -166,7 +167,8 @@ const WaveTrack = (props: IProps) => {
                     <Box>
                         {(arrComments !== null && arrComments.length > 0) && arrComments.map(item => {
                             return (<Tooltip title={item.content} arrow key={item._id}>
-                                <img
+                                <Image
+                                    alt='avatar icon on track'
                                     //hover vào img không chạy hoverDivRef
                                     onPointerMove={(e) => {
                                         const hover = hoverDivRef.current!
@@ -195,7 +197,7 @@ const WaveTrack = (props: IProps) => {
             </Box>
             <Box sx={{ width: "25%", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 {track?.imgUrl ?
-                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} width={250} height={250} style={{ objectFit: 'cover' }} /> : <Box sx={{
+                    <Image alt='image-track' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} width={250} height={250} style={{ objectFit: 'cover' }} /> : <Box sx={{
                         background: "#ccc",
                         width: 250,
                         height: 250
