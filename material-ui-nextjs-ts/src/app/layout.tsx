@@ -1,6 +1,7 @@
 import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry'
 import AuthProvider from '@/lib/auth.provider'
 import { TrackContextProvider } from '@/lib/context.provider';
+import NProgressBarProvider from '@/lib/nprogress.bar.provider';
 import { ToastProvider } from '@/utils/use-toast-mui';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -9,11 +10,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <AuthProvider>
-            <ToastProvider>
-              <TrackContextProvider>
-                {children}
-              </TrackContextProvider>
-            </ToastProvider>
+            <NProgressBarProvider>
+              <ToastProvider>
+                <TrackContextProvider>
+                  {children}
+                </TrackContextProvider>
+              </ToastProvider>
+            </NProgressBarProvider>
           </AuthProvider>
         </ThemeRegistry>
       </body>
