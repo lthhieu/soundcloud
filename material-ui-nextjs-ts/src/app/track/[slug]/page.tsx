@@ -1,8 +1,7 @@
 import WaveTrack from '@/components/track/wave.track'
 import { sendRequest } from '@/utils/api'
 import Container from '@mui/material/Container'
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { convertStringToSlug } from '@/utils/api';
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -33,9 +32,19 @@ export async function generateMetadata(
         },
     }
 }
+// `${track.title.toLowerCase().split(' ').join('-')}-${track._id}.html`
+export async function generateStaticParams() {
+    return [
+        { slug: "song-cho-het-doi-thanh-xuan-653f986a1460bc2897e2aef8.html" },
+        { slug: "khi-con-mo-dan-phai-653f986a1460bc2897e2aef3.html" },
+        { slug: "nu-hon-bisou-653f986a1460bc2897e2aef1.html" }
+    ]
+}
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     const slug = params?.slug?.split("-")?.pop()?.replace(".html", "") ?? undefined
-    const session = await getServerSession(authOptions)
+    // const session = await getServerSession(authOptions)
+    // const session = process.browser ? await getServerSession(authOptions) : null;
+
     const res = await sendRequest<IBackendResponse<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`
 
@@ -50,18 +59,6 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
             sort: '-createdAt'
         }
     })
-    const res2 = await sendRequest<IBackendResponse<IModelPaginate<ITrackLike>>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
-        queryParams: {
-            current: 1,
-            pageSize: 100,
-            sort: '-createdAt'
-        }, headers: {
-            Authorization: `Bearer ${session?.access_token}`,
-        },
-    })
-
-    await new Promise(resolve => setTimeout(resolve, 3000))
 
     if (!res.data) {
         notFound()
@@ -69,12 +66,9 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     if (!res1.data) {
         notFound()
     }
-    if (!res2.data) {
-        notFound()
-    }
 
     return (<Container>
-        <WaveTrack track={res?.data ?? null} arrComments={res1.data?.result ?? []} likedTracks={res2.data?.result} />
+        <WaveTrack track={res?.data ?? null} arrComments={res1.data?.result ?? []} />
     </Container>)
 }
 export default DetailTrackPage

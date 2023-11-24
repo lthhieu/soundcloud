@@ -66,7 +66,7 @@ const AppBottom = () => {
                                     ref={playerRef}
                                     layout='horizontal-reverse'
                                     volume={0.5}
-                                    autoPlay
+                                    // autoPlay
                                     style={{
                                         backgroundColor: '#f2f2f2', boxShadow: 'none'
                                     }}

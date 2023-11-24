@@ -10,15 +10,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <AuthProvider>
-            <ScrollbarProvider>
-              <NProgressBarProvider>
-                <ToastProvider>
-                  <TrackContextProvider>
-                    {children}
-                  </TrackContextProvider>
-                </ToastProvider>
-              </NProgressBarProvider>
-            </ScrollbarProvider>
+            {/* <ScrollbarProvider> */}
+            <NProgressBarProvider>
+              <ToastProvider>
+                <TrackContextProvider>
+                  {children}
+                </TrackContextProvider>
+              </ToastProvider>
+            </NProgressBarProvider>
+            {/* </ScrollbarProvider> */}
           </AuthProvider>
         </ThemeRegistry>
       </body>

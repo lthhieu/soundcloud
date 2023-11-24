@@ -7,13 +7,32 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { sendRequest } from "@/utils/api"
 import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 interface IProps {
     track: ITrackTop | null,
-    likedTracks: ITrackLike[] | undefined
 }
 const LikeTrack = (props: IProps) => {
-    let { track, likedTracks } = props
+    let { track } = props
     const { data: session } = useSession()
+    const [likedTracks, setLikedTracks] = useState<null | ITrackLike[]>(null)
+    const fetchData = async () => {
+        if (session?.access_token) {
+            const res = await sendRequest<IBackendResponse<IModelPaginate<ITrackLike>>>({
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
+                queryParams: {
+                    current: 1,
+                    pageSize: 100,
+                    sort: '-createdAt'
+                }, headers: {
+                    Authorization: `Bearer ${session?.access_token}`,
+                },
+            })
+            if (res.data?.result) {
+                setLikedTracks(res.data?.result)
+            }
+        }
+    }
+    useEffect(() => { fetchData() }, [session])
     const router = useRouter()
     const handleClick = async () => {
         await sendRequest<IBackendResponse<any>>({

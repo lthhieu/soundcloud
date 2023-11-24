@@ -12,14 +12,14 @@ import { fetchDefaultImages, sendRequest } from '@/utils/api'
 import CommentTrack from './comment.track'
 import LikeTrack from './like.track'
 import Image from 'next/image'
+
 interface IProps {
     track: ITrackTop | null,
     arrComments: ITrackComment[] | null,
-    likedTracks: ITrackLike[] | undefined
 }
 const WaveTrack = (props: IProps) => {
     const firstViewRef = useRef(true)
-    const { track, arrComments, likedTracks } = props
+    const { track, arrComments } = props
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     //div chứa waveform
     const ref = useRef<HTMLDivElement>(null)
@@ -205,7 +205,7 @@ const WaveTrack = (props: IProps) => {
             </Box>
         </Box>
         <Box sx={{ mt: '1rem' }}>
-            <LikeTrack track={track} likedTracks={likedTracks} />
+            <LikeTrack track={track} />
         </Box>
         <Box sx={{ mt: '1rem' }}>
             <CommentTrack arrComments={arrComments} track={track} wavesurfer={wavesurfer} />

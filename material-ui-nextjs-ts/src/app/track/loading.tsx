@@ -1,7 +1,6 @@
 import Container from "@mui/material/Container";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box"
-import PauseIcon from '@mui/icons-material/Pause';
 import { Grid } from "@mui/material";
 
 export default function Loading() {
