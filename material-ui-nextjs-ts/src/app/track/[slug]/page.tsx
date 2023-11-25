@@ -33,13 +33,36 @@ export async function generateMetadata(
     }
 }
 // `${track.title.toLowerCase().split(' ').join('-')}-${track._id}.html`
-export async function generateStaticParams() {
-    return [
-        { slug: "song-cho-het-doi-thanh-xuan-653f986a1460bc2897e2aef8.html" },
-        { slug: "khi-con-mo-dan-phai-653f986a1460bc2897e2aef3.html" },
-        { slug: "nu-hon-bisou-653f986a1460bc2897e2aef1.html" }
-    ]
+async function fetchTopTracks(category: string) {
+    const response = await sendRequest<IBackendResponse<ITrackTop[]>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/top`,
+        method: 'POST',
+        body: {
+            category,
+            limit: 10
+        },
+    });
+    return response?.data ?? [];
 }
+
+export async function generateStaticParams() {
+    const [partiesArr, workoutsArr, chillsArr] = await Promise.all([
+        fetchTopTracks('PARTY'),
+        fetchTopTracks('WORKOUT'),
+        fetchTopTracks('CHILL'),
+    ]);
+
+    const createSlugArray = (tracksArr: ITrackTop[]) => tracksArr.map((track) => ({
+        slug: `${track.title.toLowerCase().split(' ').join('-')}-${track._id}.html`
+    }));
+
+    const slugPartiesArray = createSlugArray(partiesArr);
+    const slugWorkoutsArray = createSlugArray(workoutsArr);
+    const slugChillsArray = createSlugArray(chillsArr);
+
+    return [...slugPartiesArray, ...slugWorkoutsArray, ...slugChillsArray];
+}
+
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     const slug = params?.slug?.split("-")?.pop()?.replace(".html", "") ?? undefined
     // const session = await getServerSession(authOptions)

@@ -19,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <AppHeader />
     {children}
     <AppBottom />
+
     <Script
       strategy="lazyOnload"
       type="application/ld+json"
