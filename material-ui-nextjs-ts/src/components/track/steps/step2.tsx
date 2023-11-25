@@ -145,6 +145,13 @@ const Step2 = (props: IProps) => {
         if (newTrack.data) {
             setValue(0)
             toast.success('Create e new track successfully')
+            await sendRequest<IBackendResponse<any>>({
+                url: '/api/revalidate',
+                method: 'POST',
+                queryParams: {
+                    tag: 'track-by-profile'
+                }
+            })
         } else {
             toast.error(newTrack.message)
         }
@@ -172,7 +179,7 @@ const Step2 = (props: IProps) => {
                     <Box sx={{ width: '220px', height: '220px', bgcolor: '#ccc' }}>
                         <div style={{ cursor: 'pointer' }} onClick={() => { handlePreviewImage() }}>
                             {info.imgUrl &&
-                                <Image alt='img-upload' style={{ height: '220px', width: '220px', objectFit: 'cover' }} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />}</div>
+                                <Image alt='img-upload' width={220} height={220} style={{ objectFit: 'cover' }} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />}</div>
                     </Box>
                     <ColorButton
                         onChange={(e) => {

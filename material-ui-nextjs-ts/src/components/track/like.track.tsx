@@ -46,6 +46,14 @@ const LikeTrack = (props: IProps) => {
             }
 
         })
+        await sendRequest<IBackendResponse<any>>({
+            url: '/api/revalidate',
+            method: 'POST',
+            queryParams: {
+                tag: 'track-by-id'
+            }
+        })
+        fetchData()
         router.refresh()
     }
     return (<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -53,7 +53,7 @@ export async function generateStaticParams() {
     ]);
 
     const createSlugArray = (tracksArr: ITrackTop[]) => tracksArr.map((track) => ({
-        slug: `${track.title.toLowerCase().split(' ').join('-')}-${track._id}.html`
+        slug: `${convertStringToSlug(track.title)}-${track._id}.html`
     }));
 
     const slugPartiesArray = createSlugArray(partiesArr);
@@ -69,8 +69,10 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     // const session = process.browser ? await getServerSession(authOptions) : null;
 
     const res = await sendRequest<IBackendResponse<ITrackTop>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`
-
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
+        nextOption: {
+            next: { tags: ['track-by-id'] }
+        }
     })
     const res1 = await sendRequest<IBackendResponse<IModelPaginate<ITrackComment>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,

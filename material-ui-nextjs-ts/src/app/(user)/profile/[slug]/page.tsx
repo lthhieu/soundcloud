@@ -9,6 +9,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
         body: {
             id: params.slug
         },
+        nextOption: { next: { tags: ['track-by-profile'] } }
     })
     const data = res.data?.result ?? []
     return (
