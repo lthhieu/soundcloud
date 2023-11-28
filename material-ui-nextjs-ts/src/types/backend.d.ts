@@ -16,13 +16,14 @@ declare global {
         statusCode: number | string,
         data?: T
     }
+    interface IMeta {
+        current: number,
+        pageSize: number,
+        pages: number,
+        total: number
+    }
     interface IModelPaginate<T> {
-        meta: {
-            current: number,
-            pageSize: number,
-            pages: number,
-            total: number
-        },
+        meta: IMeta,
         result: T[]
     }
     interface ITrackTop {
@@ -79,5 +80,12 @@ declare global {
         "trackUrl": string,
         "countLike": number,
         "countPlay": number
+    }
+    interface IPlaylist<T> {
+        "_id": string,
+        "title": string,
+        "isPublic": boolean,
+        "user": string,
+        "tracks": T[],
     }
 }

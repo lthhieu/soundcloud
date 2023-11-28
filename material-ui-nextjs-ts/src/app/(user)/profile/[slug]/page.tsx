@@ -2,6 +2,11 @@ import TracksInProfile from "@/components/profile/tracks.in.profile"
 import { sendRequest } from "@/utils/api"
 import Grid from "@mui/material/Grid"
 import Container from "@mui/material/Container"
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+    title: 'Your profile in SoundCloud',
+    description: 'Discover the top streamed music and songs online on SoundCloud',
+}
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     const res = await sendRequest<IBackendResponse<IModelPaginate<ITrackTop>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/users?current=1&pageSize=10`,
