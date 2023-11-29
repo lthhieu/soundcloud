@@ -37,7 +37,7 @@ const PlaylistPage = async () => {
     return (
         <Container sx={{ width: '100%', pt: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-                <Typography variant="h6">Playlists</Typography>
+                <Typography sx={{ color: '#999' }} variant="h6">Playlists</Typography>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <AddPlaylist />
                     <AddTracks playlist={res?.data?.result ?? []} track={res1?.data?.result ?? []} />

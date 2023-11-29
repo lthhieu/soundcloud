@@ -65,9 +65,6 @@ export async function generateStaticParams() {
 
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     const slug = params?.slug?.split("-")?.pop()?.replace(".html", "") ?? undefined
-    // const session = await getServerSession(authOptions)
-    // const session = process.browser ? await getServerSession(authOptions) : null;
-
     const res = await sendRequest<IBackendResponse<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
         nextOption: {
