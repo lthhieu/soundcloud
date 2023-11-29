@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation'
 import { useSession, signOut } from "next-auth/react"
 import { fetchDefaultImages } from '@/utils/api';
 import Image from 'next/image';
+
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -267,6 +268,14 @@ export default function AppHeader() {
                             <StyledInputBase
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        const value = (e.target as HTMLInputElement)?.value;
+                                        if (value) {
+                                            router.push(`/search?q=${value}`)
+                                        }
+                                    }
+                                }}
                             />
                         </Search>
                         <Box sx={{ flexGrow: 1 }} />

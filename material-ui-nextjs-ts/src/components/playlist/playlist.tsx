@@ -57,9 +57,6 @@ const Playlist = (props: IProps) => {
         (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
             setExpanded(newExpanded ? panel : false);
         };
-    const handleChangePagi = (event: any, value: any) => {
-        console.log('value', value)
-    };
     return (
         <Box>
             {playlist.length > 0 && playlist.map(item => {
@@ -67,13 +64,13 @@ const Playlist = (props: IProps) => {
                     <AccordionSummary>
                         <Typography>{item.title}</Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
+                    <AccordionDetails sx={{ p: 0 }}>
                         {item.tracks.length === 0 ?
                             <Typography sx={{ py: 1, px: 2 }} fontSize={14}>
                                 Empty playlist
                             </Typography> : <>
                                 {item.tracks.map((value: IExtendITrackTop) => {
-                                    return (<Box key={value._id}>
+                                    return (<Box key={value._id} sx={{ pl: 2 }}>
                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }} >
                                             <CurrentTrack track={value} /></Box>
                                         <Divider />
