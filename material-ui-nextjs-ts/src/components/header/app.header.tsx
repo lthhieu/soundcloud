@@ -131,7 +131,7 @@ export default function AppHeader() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem sx={{
-                "a": { textDecoration: 'none', color: 'inherit' }
+                "a": { textDecoration: 'none', color: 'inherit', width: '160px' }
             }}> <Link onClick={handleMenuClose} href={`/profile/${session?.user._id}`}>
                     <IconButton size="large" color="inherit"
                     >

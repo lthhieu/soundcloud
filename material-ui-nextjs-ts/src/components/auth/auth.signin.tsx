@@ -118,7 +118,7 @@ const AuthSignIn = () => {
                     </Divider>
                     <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'center' }}>
                         <Tooltip arrow title="Login with Github"><GitHubIcon onClick={() => signIn("github")} sx={{ fontSize: '2.5rem', "&:hover": { cursor: 'pointer' } }} /></Tooltip>
-                        <Tooltip arrow title="Login with Google"><GoogleIcon sx={{ fontSize: '2.5rem', "&:hover": { cursor: 'pointer' }, color: '#ea4335' }} /></Tooltip>
+                        <Tooltip arrow title="Login with Google"><GoogleIcon onClick={() => signIn("google")} sx={{ fontSize: '2.5rem', "&:hover": { cursor: 'pointer' }, color: '#ea4335' }} /></Tooltip>
                     </Box>
                 </Grid>
             </Grid>
