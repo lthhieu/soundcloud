@@ -8,10 +8,13 @@ import { sendRequest } from "@/utils/api"
 import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { useToast } from '@/utils/use-toast-mui';
+
 interface IProps {
     track: ITrackTop | null,
 }
 const LikeTrack = (props: IProps) => {
+    const toast = useToast()
     let { track } = props
     const { data: session } = useSession()
     const [likedTracks, setLikedTracks] = useState<null | ITrackLike[]>(null)
@@ -32,10 +35,16 @@ const LikeTrack = (props: IProps) => {
             }
         }
     }
-    useEffect(() => { fetchData() }, [session])
+    useEffect(() => {
+        if (session?.error === "RefreshAccessTokenError") {
+            toast.error('Please Sign In Again')
+            return
+        }
+        fetchData()
+    }, [session])
     const router = useRouter()
     const handleClick = async () => {
-        await sendRequest<IBackendResponse<any>>({
+        const res = await sendRequest<IBackendResponse<any>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
             method: 'POST',
             body: {
@@ -46,6 +55,10 @@ const LikeTrack = (props: IProps) => {
             }
 
         })
+        if (!res.data) {
+            toast.warning('Switch tab and try again or Re-sign In')
+            return
+        }
         await sendRequest<IBackendResponse<any>>({
             url: '/api/revalidate',
             method: 'POST',

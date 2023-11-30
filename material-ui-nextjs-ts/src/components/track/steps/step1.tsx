@@ -7,6 +7,7 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { useSession } from "next-auth/react"
 import axios from 'axios';
+import { useToast } from '@/utils/use-toast-mui';
 export const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -37,7 +38,7 @@ interface IProps {
 const Step1 = (props: IProps) => {
     let { setValue, setUploadTrack, uploadTrack } = props
     const { data: session } = useSession()//session phía client
-
+    const toast = useToast()
     const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
         // Do something with the files
         if (acceptedFiles && acceptedFiles[0]) {
@@ -60,8 +61,6 @@ const Step1 = (props: IProps) => {
                             fileName: acceptedFiles[0].name,
                             percent: percentCompleted
                         })
-                        // do whatever you like with the percentage complete
-                        // maybe dispatch an action that will update a progress bar or something
                     }
                 })
                 setUploadTrack((prevState) => ({
@@ -71,6 +70,7 @@ const Step1 = (props: IProps) => {
             } catch (e) {
                 //@ts-ignore
                 console.log(e.response.data.message)
+                toast.error('Cannot upload a track. Please Sign In Again')
             }
 
             // const chills = await sendRequestFile<IBackendResponse<ITrackTop[]>>({

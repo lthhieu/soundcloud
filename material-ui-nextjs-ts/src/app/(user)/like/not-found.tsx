@@ -1,8 +1,15 @@
+'use client'
 import Container from '@mui/material/Container/Container'
 import './style.css'
 import Link from 'next/link'
 import Button from '@mui/material/Button/Button'
+import { useToast } from '@/utils/use-toast-mui';
+import { useEffect } from 'react'
 export default function NotFound() {
+    const toast = useToast()
+    useEffect(() => {
+        toast.error('Please Sign In Again')
+    }, [])
     return (
         <Container>
             <section className="page_404">

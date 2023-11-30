@@ -12,6 +12,8 @@ import { useRouter } from 'next/navigation'
 import WaveSurfer from 'wavesurfer.js'
 import { useHasMounted } from '@/utils/customHook'
 import Image from 'next/image'
+import { useToast } from '@/utils/use-toast-mui';
+
 dayjs.extend(relativeTime)
 interface IProps {
     track: ITrackTop | null,
@@ -19,6 +21,8 @@ interface IProps {
     wavesurfer: null | WaveSurfer
 }
 const CommentTrack = (props: IProps) => {
+    const toast = useToast()
+
     let { arrComments, track, wavesurfer } = props
     const [yourComment, setYourComment] = useState('')
     const { data: session } = useSession()
@@ -37,6 +41,10 @@ const CommentTrack = (props: IProps) => {
                 'Authorization': `Bearer ${session?.access_token}`,
             }
         })
+        if (!res.data) {
+            toast.warning('Switch tab and try again or Re-sign In')
+            return
+        }
         if (res.data) {
             setYourComment('')
             router.refresh()

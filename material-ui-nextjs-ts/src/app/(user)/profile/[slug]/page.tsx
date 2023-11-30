@@ -18,7 +18,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     })
     const data = res.data?.result ?? []
     return (
-        <Container sx={{ mt: 5 }}>
+        <Container sx={{ my: 5 }}>
             <Grid container spacing={4}>
                 {data.length > 0 &&
                     data.map((item: ITrackTop) => {

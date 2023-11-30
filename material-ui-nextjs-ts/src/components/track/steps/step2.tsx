@@ -134,6 +134,10 @@ const Step2 = (props: IProps) => {
             toast.error('Please upload an image')
             return
         }
+        if (!info.trackUrl) {
+            toast.error('Please upload a track')
+            return
+        }
         const newTrack = await sendRequest<IBackendResponse<ITrackTop[]>>({
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
             method: 'POST',
@@ -142,6 +146,10 @@ const Step2 = (props: IProps) => {
             },
             body: info,
         })
+        if (!newTrack.data) {
+            toast.warning('Switch tab and try again!')
+            return
+        }
         if (newTrack.data) {
             setValue(0)
             toast.success('Create e new track successfully')

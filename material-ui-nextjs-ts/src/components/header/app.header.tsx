@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation'
 import { useSession, signOut } from "next-auth/react"
 import { fetchDefaultImages } from '@/utils/api';
 import Image from 'next/image';
+import ActiveLink from '@/lib/active.link';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -283,31 +284,28 @@ export default function AppHeader() {
                             "a": {
                                 color: '#ccc', '&:hover': { color: '#fff' },
                                 textDecoration: 'none',
-                                cursor: 'pointer'
+                                '&.active': { color: '#fff', backgroundColor: '#111', borderRadius: '8px' }
                             },
                             display: { xs: 'none', md: 'flex' },
                             alignItems: 'center',
                             gap: '2rem'
                         }}>
                             {session ? <>
-                                <Typography
-                                    noWrap
-                                    component="div"
+                                <ActiveLink
+                                    href="/playlist"
                                 >
-                                    <Link href="/playlist">Playlists</Link>
-                                </Typography>
-                                <Typography
-                                    noWrap
-                                    component="div"
+                                    <Typography noWrap component="div" sx={{ p: 0.8 }}>Playlists</Typography>
+                                </ActiveLink>
+                                <ActiveLink
+                                    href="/like"
                                 >
-                                    <Link href="/like">Likes</Link>
-                                </Typography>
-                                <Typography
-                                    noWrap
-                                    component="div"
+                                    <Typography noWrap component="div" sx={{ p: 0.8 }}>Likes</Typography>
+                                </ActiveLink>
+                                <ActiveLink
+                                    href="/track/upload"
                                 >
-                                    <Link href="/track/upload">Upload</Link>
-                                </Typography>
+                                    <Typography noWrap component="div" sx={{ p: 0.8 }}>Upload</Typography>
+                                </ActiveLink>
                                 <IconButton
                                     onClick={handleProfileMenuOpen}
                                 >
