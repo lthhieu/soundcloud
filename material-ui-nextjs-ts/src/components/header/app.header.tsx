@@ -141,7 +141,7 @@ export default function AppHeader() {
                     Profile</Link>
             </MenuItem>
             <MenuItem onClick={() => {
-                signOut()
+                signOut({ callbackUrl: '/' })
                 handleMenuClose()
             }}>
                 <IconButton size="large" color="inherit"
