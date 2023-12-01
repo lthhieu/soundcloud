@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { sendRequest } from "@/utils/api";
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
     title: 'Your playlist in SoundCloud',
@@ -34,6 +35,9 @@ const PlaylistPage = async () => {
             Authorization: `Bearer ${session?.access_token}`,
         }
     })
+    if (!res.data) {
+        notFound()
+    }
     return (
         <Container sx={{ width: '100%', pt: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
