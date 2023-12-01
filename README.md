@@ -31,6 +31,10 @@ Có khả năng hỗ trợ đăng nhập với các nền tảng được liệt
 
 # 3. Giao diện
 
+## SEO score
+
+![image](https://github.com/lthhieu/soundcloud/assets/100410064/d2f7cc04-3f24-42c0-b422-7160d372c6a3)
+
 ## Homepage
 
 ![image](https://github.com/lthhieu/soundcloud/assets/100410064/de29285e-3fe0-464a-bf46-24137edf8b43)
