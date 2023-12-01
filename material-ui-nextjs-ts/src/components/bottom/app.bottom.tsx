@@ -15,21 +15,39 @@ import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import { useState, useRef, useEffect } from 'react'
 import { useTrackContext } from '@/lib/context.provider';
 import { useToast } from '@/utils/use-toast-mui';
+function usePrevious(value: any) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+}
 const AppBottom = () => {
     const toast = useToast()
     const playerRef = useRef(null)
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
+    const prevTrack = usePrevious(currentTrack);
     const hasMounted = useHasMounted()
     const [like, setLike] = useState(false)
     const [follow, setFollow] = useState(false)
-    if (currentTrack?.isPlaying) {
-        //@ts-ignore
-        playerRef?.current?.audio?.current?.play()
-    }
-    else {
-        //@ts-ignore
-        playerRef?.current?.audio?.current?.pause()
-    }
+    useEffect(() => {
+        if (currentTrack?.isPlaying) {
+            //@ts-ignore
+            if (playerRef?.current?.audio?.current) {
+                //@ts-ignore
+                if (currentTrack._id !== prevTrack._id) {
+                    //@ts-ignore
+                    playerRef.current.audio.current.currentTime = 0
+                }
+            }
+            //@ts-ignore
+            playerRef?.current?.audio?.current?.play();
+        }
+        else {
+            //@ts-ignore
+            playerRef?.current?.audio?.current?.pause()
+        }
+    }, [currentTrack])
     const handleClickLikeButton = () => {
         setLike(!like)
     }
