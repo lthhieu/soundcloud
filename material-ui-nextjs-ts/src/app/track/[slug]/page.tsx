@@ -79,6 +79,9 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
             pageSize: 100,
             trackId: slug,
             sort: '-createdAt'
+        },
+        nextOption: {
+            next: { tags: ['get-comment-again'] }
         }
     })
 

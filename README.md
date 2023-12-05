@@ -13,12 +13,13 @@ Có khả năng hỗ trợ đăng nhập với các nền tảng được liệt
 # 2. Công nghệ sử dụng
 
 ## Frontend:
-- Client: Nextjs 13, MUI (typescript). Login with Next-auth (hỗ trợ đăng nhập Google/Github và Credential Provider (backend))
+- Client: Nextjs 14, MUI (typescript). Login with Next-auth (hỗ trợ đăng nhập Google/Github và Credential Provider (backend))
 - Admin: Vite, Antd (typescript)
 
 ## Nextjs:
-- Nextjs 13 với App Router (typescript)
+- Nextjs 14 với App Router (typescript)
 - Nắm vững các kiến thức thay đổi của Nextjs:
+    + Dùng server action để thực hiện like hoặc comment một bài track
     + Routing (dynamic routes, route groups)
     + Data Fetching (Server component vs Client component (use client))
     + Authentication with Next-auth (sử dụng Session/JWT/Refresh Token)

@@ -13,6 +13,7 @@ import WaveSurfer from 'wavesurfer.js'
 import { useHasMounted } from '@/utils/customHook'
 import Image from 'next/image'
 import { useToast } from '@/utils/use-toast-mui';
+import { handleCommentTrack } from '@/action'
 
 dayjs.extend(relativeTime)
 interface IProps {
@@ -29,18 +30,8 @@ const CommentTrack = (props: IProps) => {
     const router = useRouter()
     const hasMounted = useHasMounted()
     const handleSubmit = async () => {
-        const res = await sendRequest<IBackendResponse<ITrackComment>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments`,
-            method: 'POST',
-            body: {
-                content: yourComment,
-                moment: Math.round(wavesurfer?.getCurrentTime() ?? 0),
-                track: track?._id
-            },
-            headers: {
-                'Authorization': `Bearer ${session?.access_token}`,
-            }
-        })
+        const moment = Math.round(wavesurfer?.getCurrentTime() ?? 0)
+        const res = await handleCommentTrack(yourComment, track?._id, moment)
         if (!res.data) {
             toast.warning('Switch tab and try again or Re-sign In')
             return
