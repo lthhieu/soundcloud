@@ -6,7 +6,7 @@ import Playlist from '@/components/playlist/playlist';
 import AddPlaylist from '@/components/playlist/add.playlist';
 import AddTracks from '@/components/playlist/add.tracks';
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from '@/app/api/auth/auth.options';
 import { sendRequest } from "@/utils/api";
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'

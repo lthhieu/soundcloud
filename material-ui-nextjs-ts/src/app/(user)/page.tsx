@@ -2,7 +2,7 @@ import HomepageSlider from "@/components/slider/homepage.slider";
 import Container from "@mui/material/Container";
 import { sendRequest } from '@/utils/api'
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from '@/app/api/auth/auth.options';
 export default async function HomePage() {
 
   const session = await getServerSession(authOptions) //session phía server

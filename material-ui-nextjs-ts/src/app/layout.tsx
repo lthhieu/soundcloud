@@ -6,7 +6,7 @@ import ScrollbarProvider from '@/lib/scrollbar.provider';
 import { ToastProvider } from '@/utils/use-toast-mui';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ margin: 0, backgroundColor: '#fff' }}>
+    <html lang="en" style={{ margin: 0, backgroundColor: '#fff', overflow: 'hidden' }}>
       <body>
         <ThemeRegistry>
           <AuthProvider>

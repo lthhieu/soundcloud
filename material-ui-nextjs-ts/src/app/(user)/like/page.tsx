@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider'
 import Like from '@/components/like/like'
 import { sendRequest } from "@/utils/api"
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from '@/app/api/auth/auth.options';
 import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
