@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useToast } from '@/utils/use-toast-mui';
+import { handleLikeTrackAction } from "@/action"
 
 interface IProps {
     track: ITrackTop | null,
@@ -44,28 +45,13 @@ const LikeTrack = (props: IProps) => {
     }, [session])
     const router = useRouter()
     const handleClick = async () => {
-        const res = await sendRequest<IBackendResponse<any>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
-            method: 'POST',
-            body: {
-                quantity: likedTracks?.some(item => item._id === track?._id) ? -1 : 1,
-                track: track?._id
-            }, headers: {
-                'Authorization': `Bearer ${session?.access_token}`,
-            }
-
-        })
+        const quantity = likedTracks?.some(item => item._id === track?._id) ? -1 : 1
+        const trackId = track?._id
+        const res = await handleLikeTrackAction(quantity, trackId)
         if (!res.data) {
             toast.warning('Switch tab and try again or Re-sign In')
             return
         }
-        await sendRequest<IBackendResponse<any>>({
-            url: '/api/revalidate',
-            method: 'POST',
-            queryParams: {
-                tag: 'track-by-id'
-            }
-        })
         fetchData()
         router.refresh()
     }
